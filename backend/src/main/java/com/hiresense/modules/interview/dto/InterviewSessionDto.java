@@ -1,0 +1,34 @@
+package com.hiresense.modules.interview.dto;
+
+import com.hiresense.modules.interview.model.InterviewDifficulty;
+import com.hiresense.modules.interview.model.InterviewStatus;
+import com.hiresense.modules.interview.model.InterviewType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class InterviewSessionDto {
+    private Long id;
+    private InterviewType interviewType;
+    private InterviewDifficulty difficulty;
+    private String targetRole;
+    private String targetCompany;
+    private String topic;
+    private Integer totalQuestions;
+    private Integer currentQuestionIndex;
+    private InterviewStatus status;
+    private String aiProvider;
+    private String aiModel;
+    private Instant startedAt;
+    private Instant completedAt;
+    private InterviewQuestionDto currentQuestion;
+    private int answeredQuestionsCount;
+    private boolean finished;
+}

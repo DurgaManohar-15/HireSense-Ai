@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # 1. MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: hiresense-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password_change_in_prod}
+      MYSQL_DATABASE: hiresense_db
+      MYSQL_USER: ${DB_USERNAME:-hiresense_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-hiresense_password_change_in_prod}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hiresense-network
+
+  # 2. Spring Boot Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hiresense-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      SERVER_PORT: 8080
+      DB_URL: jdbc:mysql://mysql:3306/hiresense_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: ${DB_USERNAME:-hiresense_user}
+      DB_PASSWORD: ${DB_PASSWORD:-hiresense_password_change_in_prod}
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      JWT_ACCESS_EXPIRATION_MS: ${JWT_ACCESS_EXPIRATION_MS:-900000}
+      JWT_REFRESH_EXPIRATION_MS: ${JWT_REFRESH_EXPIRATION_MS:-604800000}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:80,http://localhost:5173}
+      AI_PROVIDER: ${AI_PROVIDER:-mock}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-1.5-flash}
+      ADMIN_AUTO_CREATE: ${ADMIN_AUTO_CREATE:-true}
+      INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:-admin@hiresense.ai}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-Admin@HireSense2026}
+      STORAGE_TYPE: local
+      STORAGE_LOCATION: /app/storage/resumes
+    ports:
+      - "8080:8080"
+    volumes:
+      - resume_storage:/app/storage/resumes
+    networks:
+      - hiresense-network
+
+  # 3. React Frontend Service (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080/api/v1
+    container_name: hiresense-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - hiresense-network
+
+volumes:
+  mysql_data:
+    driver: local
+  resume_storage:
+    driver: local
+
+networks:
+  hiresense-network:
+    driver: bridge

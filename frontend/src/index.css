@@ -1,0 +1,517 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   HireSense AI — Premium Multi-Depth Design System
+   Inspired by Linear, Vercel, Raycast & modern AI SaaS Copilots
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+  --font-main: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Layered Dark Surfaces */
+  --background: #05070A;
+  --background-subtle: #080B0F;
+  --surface: #0D1217;
+  --surface-card: #10161C;
+  --surface-elevated: #151B22;
+  --surface-well: #11171D;
+  --surface-hover: #181E25;
+  --input-bg: #11171D;
+
+  /* Borders */
+  --border-default: #252C34;
+  --border-card: #252D35;
+  --border-secondary: #303840;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-gold: rgba(232, 201, 130, 0.30);
+  --border-hover: rgba(232, 201, 130, 0.40);
+
+  /* Typography */
+  --text-primary: #F7F7F5;
+  --text-secondary: #A9B0BA;
+  --text-muted: #68717D;
+  --text-dim: #4B5563;
+
+  /* Champagne Gold Brand Accent */
+  --gold-primary: #E8C982;
+  --gold-light: #F5DFA8;
+  --gold-dark: #B18D4F;
+  --gold-soft: rgba(232, 201, 130, 0.10);
+  --gold-border: rgba(232, 201, 130, 0.30);
+  --gold-glow: rgba(232, 201, 130, 0.12);
+
+  /* Secondary Semantic / Data Colors */
+  --color-teal: #20D3C2;
+  --color-green: #35D07F;
+  --color-red: #FF5A5F;
+  --color-blue: #5D9CFF;
+  --color-purple: #9B7CFF;
+  --status-success: #35D07F;
+  --status-warning: #F2B84B;
+  --status-danger: #FF5A5F;
+  --status-info: #5D9CFF;
+  --status-teal: #20D3C2;
+
+  /* Buttons */
+  --btn-primary-bg: #E8C982;
+  --btn-primary-text: #05070A;
+  --btn-primary-hover: #F5DFA8;
+
+  --btn-secondary-bg: #10161C;
+  --btn-secondary-text: #F7F7F5;
+  --btn-secondary-border: #303840;
+  --btn-secondary-hover: #151B22;
+
+  /* Shadows & Depth */
+  --shadow-card: 0 18px 50px rgba(0, 0, 0, 0.30);
+  --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --glow-gold: 0 0 24px -4px rgba(232, 201, 130, 0.22);
+
+  font-family: var(--font-main);
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Global Canvas & Typography Smoothing
+   ========================================================================== */
+html {
+  height: 100%;
+  background-color: var(--background) !important;
+  color: #F7F7F5 !important;
+  scroll-behavior: smooth;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(circle at 70% 10%, rgba(232, 201, 130, 0.05), transparent 35%), #05070A !important;
+  color: #F7F7F5 !important;
+  font-family: var(--font-main);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Custom Sleek Dark Scrollbar (Track: #07090C, Thumb: #252B32, Hover: #3A424B) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07090C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #252B32;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3A424B;
+}
+
+/* ==========================================================================
+   Monochrome Multi-Depth Mappings for Tailwind Classes
+   (Protects #resume-preview-sheet for authentic paper resumes)
+   ========================================================================== */
+
+/* Main Card Surfaces */
+html.dark .bg-white:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+.dark .bg-white:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  background-color: var(--surface-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-default) !important;
+}
+
+/* Secondary Backgrounds */
+html.dark .bg-slate-50:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .bg-gray-50:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  background-color: var(--surface) !important;
+}
+
+/* Elevated Wells */
+html.dark .bg-slate-100:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .bg-gray-100:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  background-color: var(--surface-elevated) !important;
+}
+
+/* Darker Wells */
+html.dark .bg-slate-200:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .bg-gray-200:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  background-color: var(--surface-hover) !important;
+}
+
+/* Hover States */
+html.dark .hover\:bg-slate-50:hover:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .hover\:bg-gray-50:hover:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  background-color: var(--surface-hover) !important;
+}
+
+html.dark .hover\:bg-slate-100:hover:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .hover\:bg-gray-100:hover:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  background-color: var(--surface-elevated) !important;
+}
+
+/* Text Overrides */
+html.dark .text-slate-900:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-slate-800:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-gray-900:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-gray-800:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  color: var(--text-primary) !important;
+}
+
+html.dark .text-slate-700:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-slate-600:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-gray-700:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-gray-600:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  color: var(--text-secondary) !important;
+}
+
+html.dark .text-slate-500:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-gray-500:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  color: var(--text-muted) !important;
+}
+
+html.dark .text-slate-400:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .text-gray-400:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  color: var(--text-dim) !important;
+}
+
+/* Border Overrides */
+html.dark .border-slate-200:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .border-slate-300:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .border-slate-100:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .border-gray-200:not(#resume-preview-sheet):not(#resume-preview-sheet *),
+html.dark .border-gray-300:not(#resume-preview-sheet):not(#resume-preview-sheet *) {
+  border-color: var(--border-default) !important;
+}
+
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]):not(#resume-preview-sheet *),
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]):not(#resume-preview-sheet *),
+html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]):not(#resume-preview-sheet *) {
+  border-color: var(--border-subtle) !important;
+}
+
+/* ==========================================================================
+   Button System — Champagne Gold & Dark Surfaces
+   ========================================================================== */
+
+/* Primary Button: Champagne Gold */
+.btn-primary,
+.btn-gold,
+html.dark button.bg-blue-600,
+html.dark a.bg-blue-600 {
+  background-color: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-text) !important;
+  border: 1px solid rgba(231, 201, 138, 0.40) !important;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 20px -4px rgba(231, 201, 138, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover,
+.btn-gold:hover,
+html.dark button.bg-blue-600:hover,
+html.dark a.bg-blue-600:hover {
+  background-color: var(--btn-primary-hover) !important;
+  color: #05070A !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(231, 201, 138, 0.35);
+}
+
+.btn-primary:active,
+.btn-gold:active,
+html.dark button.bg-blue-600:active,
+html.dark a.bg-blue-600:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button: Elevated Dark Surface */
+.btn-secondary,
+.btn-secondary-dark,
+html.dark button.bg-white:not(#resume-preview-sheet *),
+html.dark a.bg-white:not(#resume-preview-sheet *),
+html.dark button.bg-slate-50:not(#resume-preview-sheet *),
+html.dark a.bg-slate-50:not(#resume-preview-sheet *) {
+  background-color: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 12px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-secondary:hover,
+.btn-secondary-dark:hover,
+html.dark button.bg-white:hover:not(#resume-preview-sheet *),
+html.dark a.bg-white:hover:not(#resume-preview-sheet *),
+html.dark button.bg-slate-50:hover:not(#resume-preview-sheet *),
+html.dark a.bg-slate-50:hover:not(#resume-preview-sheet *) {
+  background-color: var(--surface-hover) !important;
+  border-color: var(--border-gold) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+/* Action button (slate-900 / dark buttons) */
+html.dark button.bg-slate-900,
+html.dark a.bg-slate-900 {
+  background-color: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark button.bg-slate-900:hover,
+html.dark a.bg-slate-900:hover {
+  background-color: var(--surface-hover) !important;
+  border-color: var(--border-gold) !important;
+  transform: translateY(-1px);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+  border-color: var(--border-default);
+}
+
+/* Disabled */
+button:disabled,
+button[disabled] {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* ==========================================================================
+   Inputs & Form Controls
+   ========================================================================== */
+
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(#resume-preview-sheet *),
+html.dark textarea:not(#resume-preview-sheet *),
+html.dark select:not(#resume-preview-sheet *) {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 12px;
+  font-size: 13px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+html.dark input:focus:not([type="checkbox"]):not([type="radio"]):not(#resume-preview-sheet *),
+html.dark textarea:focus:not(#resume-preview-sheet *),
+html.dark select:focus:not(#resume-preview-sheet *) {
+  border-color: var(--gold-primary) !important;
+  box-shadow: 0 0 0 3px var(--gold-soft) !important;
+  background-color: var(--surface) !important;
+  outline: none !important;
+}
+
+/* ==========================================================================
+   Cards & Multi-Depth Containers
+   ========================================================================== */
+
+html.dark .rounded-2xl:not(#resume-preview-sheet *):not(button):not(input):not(span),
+html.dark .rounded-3xl:not(#resume-preview-sheet *):not(button):not(input):not(span),
+html.dark .rounded-xl:not(#resume-preview-sheet *):not(button):not(input):not(span) {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+html.dark .rounded-2xl:not(#resume-preview-sheet *):not(button):not(input):not(span):hover,
+html.dark .rounded-3xl:not(#resume-preview-sheet *):not(button):not(input):not(span):hover {
+  border-color: var(--border-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* ==========================================================================
+   Interactive Skill Chips Component
+   ========================================================================== */
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--surface);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.skill-chip:hover {
+  transform: translateY(-1.5px);
+  background-color: var(--surface-hover);
+  border-color: var(--border-gold);
+  color: var(--text-primary);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.skill-chip.selected {
+  background-color: var(--gold-primary);
+  color: #05070A;
+  border-color: var(--gold-primary);
+  font-weight: 600;
+  box-shadow: 0 0 16px -2px rgba(231, 201, 138, 0.3);
+}
+
+.skill-chip .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+}
+
+.skill-chip .status-dot.strong {
+  background-color: var(--status-success);
+  box-shadow: 0 0 6px rgba(53, 208, 127, 0.6);
+}
+
+.skill-chip .status-dot.intermediate,
+.skill-chip .status-dot.gap {
+  background-color: var(--gold-primary);
+  box-shadow: 0 0 6px rgba(231, 201, 138, 0.6);
+}
+
+.skill-chip .status-dot.missing {
+  background-color: var(--status-danger);
+  box-shadow: 0 0 6px rgba(255, 90, 95, 0.6);
+}
+
+/* ==========================================================================
+   AI Workflow Pipeline Visualization Component
+   ========================================================================== */
+
+.ai-pipeline-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.ai-pipeline-step.active {
+  background: var(--gold-soft);
+  border-color: var(--gold-primary);
+  color: var(--gold-primary);
+  box-shadow: 0 0 18px -4px rgba(231, 201, 138, 0.25);
+}
+
+.glass-nav {
+  background: rgba(5, 7, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.glass-pill {
+  background: rgba(16, 20, 25, 0.80);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-default);
+}
+
+.glass-card {
+  background: rgba(17, 22, 28, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   Data Tables & Segmented Tabs
+   ========================================================================== */
+
+html.dark table:not(#resume-preview-sheet *) {
+  background-color: var(--surface);
+  width: 100%;
+}
+
+html.dark table thead:not(#resume-preview-sheet *),
+html.dark table thead th:not(#resume-preview-sheet *) {
+  background-color: var(--surface-elevated) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-default) !important;
+  padding: 14px 16px;
+}
+
+html.dark table tbody tr:not(#resume-preview-sheet *) {
+  border-bottom: 1px solid var(--border-subtle) !important;
+  transition: background-color 0.15s ease;
+}
+
+html.dark table tbody tr:hover:not(#resume-preview-sheet *) {
+  background-color: var(--surface-hover) !important;
+}
+
+html.dark table tbody td:not(#resume-preview-sheet *) {
+  color: var(--text-secondary);
+  padding: 14px 16px;
+}
+
+/* Modals */
+html.dark [role="dialog"],
+html.dark .fixed .bg-white {
+  background-color: var(--surface) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 1px 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .fixed.inset-0.bg-black\/50,
+html.dark .fixed.inset-0.bg-slate-900\/50 {
+  background-color: rgba(0, 0, 0, 0.78) !important;
+  backdrop-filter: blur(10px);
+}

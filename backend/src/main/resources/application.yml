@@ -1,0 +1,43 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: hiresense-backend
+  profiles:
+    active: dev
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+hiresense:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    access-token-expiration-ms: ${JWT_ACCESS_EXPIRATION_MS:900000} # 15 minutes
+    refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+  ai:
+    provider: ${AI_PROVIDER:mock} # Options: mock, gemini, openai
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+      model: ${GEMINI_MODEL:gemini-3.6-flash}
+  oauth:
+    google:
+      client-id: ${GOOGLE_CLIENT_ID:}
+      client-secret: ${GOOGLE_CLIENT_SECRET:}
+      redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/api/v1/auth/google/callback}
+      frontend-redirect-url: ${FRONTEND_URL:http://localhost:5173/auth/callback}
+      frontend-login-url: ${FRONTEND_LOGIN_URL:http://localhost:5173/login}
+  admin:
+    initial:
+      # In production, initial admin auto-seeding is disabled unless explicitly enabled with a secure password
+      auto-create: ${ADMIN_AUTO_CREATE:true}
+      email: ${INITIAL_ADMIN_EMAIL:admin@hiresense.ai}
+      password: ${INITIAL_ADMIN_PASSWORD:Admin@HireSense2026}
+      first-name: System
+      last-name: Administrator
+
