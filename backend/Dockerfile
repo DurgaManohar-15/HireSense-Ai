@@ -22,7 +22,7 @@ WORKDIR /app
 RUN addgroup -S hiresense && adduser -S hiresense -G hiresense
 
 # Create persistent storage directories
-RUN mkdir -p /app/storage/resumes && chown -R hiresense:hiresense /app
+RUN mkdir -p /app/storage/resumes /app/storage/data && chown -R hiresense:hiresense /app
 
 # Copy executable jar from builder stage
 COPY --from=builder /app/target/hiresense-backend-*.jar /app/app.jar

@@ -29,6 +29,10 @@ spring:
       ddl-auto: update
     show-sql: false
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.H2Dialect}
   flyway:
     enabled: ${FLYWAY_ENABLED:false}
     baseline-on-migrate: true
