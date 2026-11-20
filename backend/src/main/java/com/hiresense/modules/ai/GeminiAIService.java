@@ -39,7 +39,7 @@ public class GeminiAIService implements AIService {
     @Value("${hiresense.ai.gemini.api-key:}")
     private String apiKey;
 
-    @Value("${hiresense.ai.gemini.model:gemini-3.6-flash}")
+    @Value("${hiresense.ai.gemini.model:gemini-1.5-flash}")
     private String modelName;
 
     @Override
@@ -290,7 +290,13 @@ public class GeminiAIService implements AIService {
 
     // Helper to call Gemini REST API and sanitize response
     private String callGeminiApi(String prompt) throws Exception {
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/" + modelName + ":generateContent?key=" + apiKey;
+        String activeModel = (modelName == null || modelName.isBlank() || modelName.contains("3.6"))
+                ? "gemini-1.5-flash" : modelName.trim();
+        return executeGeminiRequest(prompt, activeModel);
+    }
+
+    private String executeGeminiRequest(String prompt, String targetModel) throws Exception {
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/" + targetModel + ":generateContent?key=" + apiKey;
 
         Map<String, Object> textPart = Map.of("text", prompt);
         Map<String, Object> contentPart = Map.of("parts", Collections.singletonList(textPart));
@@ -306,25 +312,34 @@ public class GeminiAIService implements AIService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
 
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            JsonNode root = objectMapper.readTree(response.getBody());
-            JsonNode candidates = root.path("candidates");
-            if (candidates.isArray() && !candidates.isEmpty()) {
-                String rawJson = candidates.get(0)
-                        .path("content")
-                        .path("parts")
-                        .get(0)
-                        .path("text")
-                        .asText();
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                JsonNode root = objectMapper.readTree(response.getBody());
+                JsonNode candidates = root.path("candidates");
+                if (candidates.isArray() && !candidates.isEmpty()) {
+                    String rawJson = candidates.get(0)
+                            .path("content")
+                            .path("parts")
+                            .get(0)
+                            .path("text")
+                            .asText();
 
-                String cleanJson = rawJson.trim();
-                if (cleanJson.startsWith("```json")) cleanJson = cleanJson.substring(7);
-                else if (cleanJson.startsWith("```")) cleanJson = cleanJson.substring(3);
-                if (cleanJson.endsWith("```")) cleanJson = cleanJson.substring(0, cleanJson.length() - 3);
-                return cleanJson.trim();
+                    String cleanJson = rawJson.trim();
+                    if (cleanJson.startsWith("```json")) cleanJson = cleanJson.substring(7);
+                    else if (cleanJson.startsWith("```")) cleanJson = cleanJson.substring(3);
+                    if (cleanJson.endsWith("```")) cleanJson = cleanJson.substring(0, cleanJson.length() - 3);
+                    return cleanJson.trim();
+                }
             }
+        } catch (Exception e) {
+            // If primary model failed and it wasn't gemini-1.5-flash, fallback to gemini-1.5-flash
+            if (!"gemini-1.5-flash".equals(targetModel)) {
+                log.warn("Gemini call with model {} failed ({}). Retrying with gemini-1.5-flash fallback...", targetModel, e.getMessage());
+                return executeGeminiRequest(prompt, "gemini-1.5-flash");
+            }
+            throw e;
         }
         throw new RuntimeException("Empty or malformed payload received from Gemini API");
     }

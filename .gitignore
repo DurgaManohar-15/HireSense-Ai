@@ -2,6 +2,9 @@
 .env
 .env.local
 .env.*.local
+frontend/.env
+frontend/.env.local
+backend/.env
 *.pem
 *.key
 
@@ -70,8 +73,10 @@ desktop.ini
 # Logs & Database
 *.log
 mysql_data/
-storage/resumes/*
-!storage/resumes/.gitkeep
+storage/
+backend/storage/
+*.mv.db
+*.trace.db
 
 # Temporary / Scratch
 scratch/

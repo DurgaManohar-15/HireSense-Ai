@@ -26,6 +26,9 @@ public class AIServiceRouter implements AIService {
     @Value("${hiresense.ai.provider:mock}")
     private String configuredProvider;
 
+    @Value("${hiresense.ai.gemini.api-key:}")
+    private String geminiApiKey;
+
     public AIServiceRouter(
             @Qualifier("mockAIService") AIService mockAIService,
             @Qualifier("geminiAIService") AIService geminiAIService) {
@@ -196,6 +199,9 @@ public class AIServiceRouter implements AIService {
 
     private AIService getActiveService() {
         if ("gemini".equalsIgnoreCase(configuredProvider)) {
+            return geminiAIService;
+        }
+        if (geminiApiKey != null && !geminiApiKey.trim().isEmpty() && !geminiApiKey.equals("YOUR_GEMINI_API_KEY") && !"mock".equalsIgnoreCase(configuredProvider)) {
             return geminiAIService;
         }
         return mockAIService;

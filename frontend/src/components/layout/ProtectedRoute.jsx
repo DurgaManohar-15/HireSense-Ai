@@ -9,9 +9,9 @@ export const ProtectedRoute = ({ requiredRole }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#000000] text-white">
-        <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-        <p className="mt-4 text-[#71717A] font-medium text-xs tracking-wide">Authenticating session...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EFE6] text-[#292929]">
+        <div className="w-8 h-8 border-2 border-[#E78260]/20 border-t-[#E78260] rounded-full animate-spin"></div>
+        <p className="mt-4 text-[#5C5850] font-medium text-xs tracking-wide">Authenticating session...</p>
       </div>
     );
   }
@@ -28,15 +28,15 @@ export const ProtectedRoute = ({ requiredRole }) => {
   const isFullBleed = location.pathname.startsWith('/resume/builder') || location.pathname.startsWith('/coding/') || location.pathname.includes('/room');
 
   return (
-    <div className="fixed inset-0 h-screen w-screen flex flex-col bg-[#05070A] text-[#F7F7F5] overflow-hidden select-text">
+    <div className="fixed inset-0 h-screen w-screen flex flex-col bg-[#F3EFE6] text-[#292929] overflow-hidden select-text">
       <Navbar />
       <div className="flex flex-1 min-h-0 overflow-hidden">
         <Sidebar />
         <main
           className={
             isFullBleed
-              ? "flex-1 overflow-hidden flex flex-col min-w-0 bg-[#05070A]"
-              : "flex-1 p-6 md:p-8 overflow-y-auto overscroll-none w-full bg-[#05070A]"
+              ? "flex-1 overflow-hidden flex flex-col min-w-0 bg-[#F3EFE6]"
+              : "flex-1 p-6 md:p-8 overflow-y-auto overscroll-none w-full bg-[#F3EFE6]"
           }
         >
           <div className={isFullBleed ? "h-full w-full" : "max-w-7xl mx-auto"}>

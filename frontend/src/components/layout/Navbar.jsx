@@ -59,36 +59,33 @@ export const Navbar = () => {
   const isSetupActive = pathname.startsWith('/onboarding') || pathname.startsWith('/settings');
 
   return (
-    <header className="flex-shrink-0 z-40 h-[68px] bg-[#05070A]/88 backdrop-blur-[18px] border-b border-white/[0.08] px-5 sm:px-8 flex items-center justify-between transition-colors shadow-[0_4px_30px_rgba(0,0,0,0.6)]">
+    <header className="flex-shrink-0 z-40 h-[68px] bg-[#F3EFE6]/90 backdrop-blur-[18px] border-b border-[#E2DDD5] px-5 sm:px-8 flex items-center justify-between transition-colors shadow-sm">
       {/* Left: Premium HireSense Logo */}
       <div className="flex items-center gap-3">
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#151B22] to-[#0A0D11] border border-[#E8C982]/30 flex items-center justify-center shadow-[0_0_16px_rgba(232,201,130,0.12)] transition-all duration-300 group-hover:border-[#E8C982]/60 group-hover:shadow-[0_0_24px_rgba(232,201,130,0.25)]">
-            <span className="font-black text-sm tracking-tight text-[#E8C982]">H</span>
-            <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-[#E8C982] shadow-[0_0_6px_#E8C982]" />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-base tracking-tight text-[#F7F7F5] group-hover:text-white transition-colors">
-              HireSense
-            </span>
-            <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider bg-[#B18D4F]/20 text-[#E8C982] border border-[#E8C982]/30">
-              AI
-            </span>
-          </div>
+        <Link to="/" className="flex items-center gap-1.5 group">
+          <span className="font-black text-xl tracking-tight text-[#292929]">
+            HireSense
+          </span>
+          <span className="text-xl font-serif text-[#E78260] font-bold group-hover:rotate-45 transition-transform duration-300">
+            *
+          </span>
+          <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-[#FBEDE8] text-[#E78260] border border-[#E78260]/30 ml-1">
+            AI
+          </span>
         </Link>
       </div>
 
       {/* Center: Floating Pill Navigation */}
-      <nav className="hidden md:flex items-center gap-1 p-1 rounded-[22px] bg-[#14191F]/85 border border-[#252C34] backdrop-blur-[14px] shadow-[0_4px_24px_rgba(0,0,0,0.35)]">
+      <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-white border border-[#E2DDD5] shadow-xs">
         <Link
           to="/jobs"
           className={`px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${
             isJobsActive
-              ? 'bg-[#1F2731] text-[#F7F7F5] font-semibold shadow-xs'
-              : 'text-[#A9B0BA] hover:text-[#F7F7F5] hover:bg-white/[0.05]'
+              ? 'bg-[#292929] text-white font-semibold shadow-xs'
+              : 'text-[#5C5850] hover:text-[#292929] hover:bg-[#FAF8F5]'
           }`}
         >
-          <Briefcase className={`w-3.5 h-3.5 ${isJobsActive ? 'text-[#E8C982]' : 'text-[#68717D]'}`} />
+          <Briefcase className={`w-3.5 h-3.5 ${isJobsActive ? 'text-[#E78260]' : 'text-[#8E8A82]'}`} />
           <span>Jobs</span>
         </Link>
 
@@ -96,11 +93,11 @@ export const Navbar = () => {
           to="/resume/builder"
           className={`px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${
             isResumeActive
-              ? 'bg-[#1F2731] text-[#F7F7F5] font-semibold shadow-xs'
-              : 'text-[#A9B0BA] hover:text-[#F7F7F5] hover:bg-white/[0.05]'
+              ? 'bg-[#292929] text-white font-semibold shadow-xs'
+              : 'text-[#5C5850] hover:text-[#292929] hover:bg-[#FAF8F5]'
           }`}
         >
-          <FileText className={`w-3.5 h-3.5 ${isResumeActive ? 'text-[#E8C982]' : 'text-[#68717D]'}`} />
+          <FileText className={`w-3.5 h-3.5 ${isResumeActive ? 'text-[#E78260]' : 'text-[#8E8A82]'}`} />
           <span>Resume</span>
         </Link>
 
@@ -108,11 +105,11 @@ export const Navbar = () => {
           to="/coding"
           className={`px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${
             isPracticeActive
-              ? 'bg-[#1F2731] text-[#F7F7F5] font-semibold shadow-xs'
-              : 'text-[#A9B0BA] hover:text-[#F7F7F5] hover:bg-white/[0.05]'
+              ? 'bg-[#292929] text-white font-semibold shadow-xs'
+              : 'text-[#5C5850] hover:text-[#292929] hover:bg-[#FAF8F5]'
           }`}
         >
-          <Code2 className={`w-3.5 h-3.5 ${isPracticeActive ? 'text-[#E8C982]' : 'text-[#68717D]'}`} />
+          <Code2 className={`w-3.5 h-3.5 ${isPracticeActive ? 'text-[#E78260]' : 'text-[#8E8A82]'}`} />
           <span>Practice</span>
         </Link>
 
@@ -120,11 +117,11 @@ export const Navbar = () => {
           to="/onboarding"
           className={`px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${
             isSetupActive
-              ? 'bg-[#1F2731] text-[#F7F7F5] font-semibold shadow-xs'
-              : 'text-[#A9B0BA] hover:text-[#F7F7F5] hover:bg-white/[0.05]'
+              ? 'bg-[#292929] text-white font-semibold shadow-xs'
+              : 'text-[#5C5850] hover:text-[#292929] hover:bg-[#FAF8F5]'
           }`}
         >
-          <Compass className={`w-3.5 h-3.5 ${isSetupActive ? 'text-[#E8C982]' : 'text-[#68717D]'}`} />
+          <Compass className={`w-3.5 h-3.5 ${isSetupActive ? 'text-[#E78260]' : 'text-[#8E8A82]'}`} />
           <span>Setup</span>
         </Link>
       </nav>
@@ -134,13 +131,13 @@ export const Navbar = () => {
         {/* Command Search Bar (320px) */}
         <div
           onClick={() => navigate('/jobs')}
-          className="hidden xl:flex items-center justify-between w-[320px] px-3.5 py-2 rounded-[12px] bg-[#11171D] border border-[#252C34] text-xs text-[#68717D] hover:border-[#E8C982]/40 hover:text-[#A9B0BA] transition-all cursor-pointer shadow-xs backdrop-blur-md"
+          className="hidden xl:flex items-center justify-between w-[320px] px-3.5 py-2 rounded-full bg-white border border-[#E2DDD5] text-xs text-[#8E8A82] hover:border-[#E78260]/40 hover:text-[#292929] transition-all cursor-pointer shadow-xs"
         >
           <div className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5 text-[#68717D]" />
+            <Search className="w-3.5 h-3.5 text-[#8E8A82]" />
             <span className="font-normal truncate">Search jobs, skills, or anything...</span>
           </div>
-          <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#151B22] border border-[#252C34] text-[#A9B0BA] shadow-xs">
+          <kbd className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FAF8F5] border border-[#E2DDD5] text-[#5C5850]">
             Ctrl K
           </kbd>
         </div>
@@ -149,11 +146,11 @@ export const Navbar = () => {
         <Link
           to={isAdmin ? '/admin/announcements' : '/announcements'}
           title="Campus Announcements"
-          className="relative w-8 h-8 rounded-xl flex items-center justify-center text-[#A9B0BA] hover:text-[#E8C982] hover:bg-white/[0.04] transition-all"
+          className="relative w-8 h-8 rounded-full flex items-center justify-center text-[#5C5850] hover:text-[#E78260] hover:bg-white transition-all"
         >
           <Megaphone className="w-4 h-4" />
           {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#E8C982] shadow-[0_0_8px_#E8C982] animate-pulse" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#E78260] shadow-[0_0_8px_#E78260] animate-pulse" />
           )}
         </Link>
 
@@ -161,11 +158,11 @@ export const Navbar = () => {
         <Link
           to="/notifications"
           title="Notifications"
-          className="relative w-8 h-8 rounded-xl flex items-center justify-center text-[#A9B0BA] hover:text-[#F7F7F5] hover:bg-white/[0.04] transition-all"
+          className="relative w-8 h-8 rounded-full flex items-center justify-center text-[#5C5850] hover:text-[#292929] hover:bg-white transition-all"
         >
           <Bell className="w-4 h-4" />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-[#E8C982] text-[#05070A] text-[9px] font-extrabold flex items-center justify-center shadow-xs">
+            <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-[#E78260] text-white text-[9px] font-extrabold flex items-center justify-center shadow-xs">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
@@ -175,46 +172,46 @@ export const Navbar = () => {
         <Link
           to="/settings"
           title="Settings"
-          className="w-8 h-8 rounded-xl flex items-center justify-center text-[#A9B0BA] hover:text-[#F7F7F5] hover:bg-white/[0.04] transition-all"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-[#5C5850] hover:text-[#292929] hover:bg-white transition-all"
         >
           <Settings className="w-4 h-4" />
         </Link>
 
-        <div className="w-[1px] h-4 bg-white/[0.08] mx-0.5"></div>
+        <div className="w-[1px] h-4 bg-[#E2DDD5] mx-0.5"></div>
 
         {/* Premium Profile Pill */}
         <Link
           to="/profile"
-          className="flex items-center gap-2.5 px-3 py-1.5 rounded-[14px] bg-[#10161C] border border-[#252C34] hover:border-[#E8C982]/35 transition-all group shadow-xs"
+          className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white border border-[#E2DDD5] hover:border-[#E78260]/40 transition-all group shadow-xs"
           title="Candidate Profile"
         >
           {user?.profilePictureUrl ? (
             <img
               src={user.profilePictureUrl}
               alt={displayName}
-              className="w-6 h-6 rounded-lg object-cover ring-1 ring-[#E8C982]/30"
+              className="w-6 h-6 rounded-full object-cover ring-1 ring-[#E78260]/30"
             />
           ) : (
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#181E25] to-[#10161C] border border-[#E8C982]/30 text-[#E8C982] flex items-center justify-center text-[10px] font-bold shadow-xs">
+            <div className="w-6 h-6 rounded-full bg-[#FBEDE8] border border-[#E78260]/30 text-[#E78260] flex items-center justify-center text-[10px] font-bold shadow-xs">
               {displayName.charAt(0).toUpperCase()}
             </div>
           )}
           <div className="hidden sm:flex flex-col text-left">
-            <span className="text-xs font-semibold text-[#F7F7F5] group-hover:text-white leading-tight max-w-[110px] truncate">
+            <span className="text-xs font-semibold text-[#292929] group-hover:text-[#E78260] leading-tight max-w-[110px] truncate transition-colors">
               {displayName}
             </span>
-            <span className="text-[10px] text-[#68717D] leading-none">
+            <span className="text-[10px] text-[#8E8A82] leading-none">
               {userRole}
             </span>
           </div>
-          <ChevronDown className="w-3 h-3 text-[#68717D] group-hover:text-[#A9B0BA] transition-colors ml-0.5" />
+          <ChevronDown className="w-3 h-3 text-[#8E8A82] group-hover:text-[#292929] transition-colors ml-0.5" />
         </Link>
 
         {/* Sign Out */}
         <button
           onClick={handleLogout}
           title="Sign Out"
-          className="w-8 h-8 rounded-xl flex items-center justify-center text-[#68717D] hover:text-[#FF5A5F] hover:bg-white/[0.04] transition-all"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-[#8E8A82] hover:text-[#E74C3C] hover:bg-white transition-all"
         >
           <LogOut className="w-4 h-4" />
         </button>

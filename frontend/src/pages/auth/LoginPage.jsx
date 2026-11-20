@@ -1,7 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Sparkles, AlertCircle, ShieldCheck, Mail, Lock, ArrowRight, UserCheck } from 'lucide-react';
+import {
+  Sparkles,
+  AlertCircle,
+  ShieldCheck,
+  Mail,
+  Lock,
+  ArrowRight,
+  UserCheck,
+  Zap,
+  Target,
+  FileText,
+  Bot,
+  CheckCircle2,
+  TrendingUp,
+  Award,
+  Layers
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export const LoginPage = () => {
@@ -19,7 +35,12 @@ export const LoginPage = () => {
   useEffect(() => {
     const errorParam = searchParams.get('error');
     if (errorParam) {
-      setError(decodeURIComponent(errorParam));
+      const decoded = decodeURIComponent(errorParam);
+      if (decoded.toLowerCase().includes('google oauth is not configured')) {
+        setError('Google OAuth is not configured on this host. Use the 1-Click Demo Login below to enter instantly!');
+      } else {
+        setError(decoded);
+      }
     }
   }, [searchParams]);
 
@@ -37,7 +58,7 @@ export const LoginPage = () => {
       toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Invalid credentials.');
+      setError(err.message || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
@@ -52,12 +73,10 @@ export const LoginPage = () => {
     setLoading(true);
 
     try {
-      // First try to login
       await login(demoEmail, demoPassword);
-      toast.success('Logged in as Demo Candidate!');
+      toast.success('Signed in as Demo Candidate!');
       navigate('/dashboard');
     } catch (loginErr) {
-      // If candidate account does not exist yet, auto-register it
       try {
         await register({
           firstName: 'Alex',
@@ -76,7 +95,6 @@ export const LoginPage = () => {
     }
   };
 
-  // Google OAuth 2.0 Authorization Code Flow Entrypoint
   const handleGoogleOAuthRedirect = () => {
     setError('');
     setRedirecting(true);
@@ -85,139 +103,256 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#000000] px-4 py-12 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Subtle Monochrome Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] bg-white/[0.02] rounded-full blur-3xl pointer-events-none"></div>
+    <div className="min-h-screen bg-[#F3EFE6] text-[#292929] flex items-center justify-center p-4 sm:p-6 lg:p-10 relative overflow-hidden font-sans selection:bg-[#E78260]/20 selection:text-[#E78260]">
+      {/* Dynamic Ambient Background Elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[45rem] h-[45rem] bg-[#E78260]/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-[#292929]/5 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-md w-full relative z-10">
-        {/* Main Monochrome Card */}
-        <div className="bg-[#101010] border border-[#222222] rounded-3xl p-8 sm:p-9 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]">
-          
-          {/* Header & Minimal Logo */}
-          <div className="text-center mb-7">
-            <Link to="/" className="inline-flex items-center justify-center gap-2 mb-3">
-              <div className="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-black font-extrabold text-base shadow-sm">
-                H
-              </div>
-            </Link>
-            
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              HireSense
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10 py-6">
+
+        {/* Left Column: Brand Hero & Placement Showcase */}
+        <div className="lg:col-span-7 space-y-7">
+          {/* Top Pill */}
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E2DDD5] text-[#292929] text-xs font-semibold shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-[#E78260]" />
+            <span>AI-Driven Placement Readiness Intelligence</span>
+          </div>
+
+          {/* Main Title */}
+          <div className="space-y-3">
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-[1.12] text-[#292929]">
+              Bridge the Gap to <br />
+              <span className="font-serif italic font-normal text-[#E78260]">
+                Day-1 Enterprise Placements.
+              </span>
             </h1>
-            <p className="text-[#71717A] text-xs mt-1 font-medium">
-              Student Placement Readiness &amp; Career Operating System
+            <p className="text-[#5C5850] text-sm sm:text-base leading-relaxed max-w-xl">
+              HireSense AI calibrates candidate skills with an explainable Placement Readiness Score (PRS),
+              ATS resume diagnostics, adaptive mock interviews, and tailored roadmap pacing.
             </p>
           </div>
 
-          {error && (
-            <div className="mb-5 p-3.5 bg-[#141414] border border-[#EF4444]/30 rounded-xl flex items-start gap-2.5 text-[#EF4444] text-xs">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <span>{error}</span>
+          {/* Core Feature Highlights Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+            <div className="p-4 rounded-2xl bg-white border border-[#E2DDD5] shadow-sm flex items-start gap-3 hover:border-[#E78260]/40 transition group">
+              <div className="p-2 rounded-xl bg-[#FBEDE8] text-[#E78260] group-hover:scale-105 transition">
+                <Target className="w-4 h-4" />
               </div>
-            </div>
-          )}
-
-          {/* Email/Password Form */}
-          <form onSubmit={handleEmailLogin} className="space-y-4 mb-5">
-            <div>
-              <label className="block text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider mb-1.5">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-[#71717A] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  required
-                  placeholder="student@university.edu"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-[#0B0B0B] border border-[#252525] text-white rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-[#666666] focus:ring-2 focus:ring-white/[0.06] transition"
-                />
+              <div>
+                <h4 className="text-xs font-bold text-[#292929]">Deterministic PRS Engine</h4>
+                <p className="text-[11px] text-[#5C5850] mt-0.5">Weighted 0–100 scoring with multi-source evidence decay.</p>
               </div>
             </div>
 
-            <div>
-              <label className="block text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider mb-1.5">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-[#71717A] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#0B0B0B] border border-[#252525] text-white rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-[#666666] focus:ring-2 focus:ring-white/[0.06] transition"
-                />
+            <div className="p-4 rounded-2xl bg-white border border-[#E2DDD5] shadow-sm flex items-start gap-3 hover:border-[#E78260]/40 transition group">
+              <div className="p-2 rounded-xl bg-[#FBEDE8] text-[#E78260] group-hover:scale-105 transition">
+                <FileText className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#292929]">ATS Resume Diagnostics</h4>
+                <p className="text-[11px] text-[#5C5850] mt-0.5">Automated keyword density, action verb &amp; fit scoring.</p>
               </div>
             </div>
 
-            {/* Primary Button: Pure White on Black */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 bg-white hover:bg-[#E5E5E5] text-black rounded-xl font-semibold text-xs transition flex items-center justify-center gap-2 disabled:opacity-50 transform hover:-translate-y-0.5 shadow-sm"
-            >
-              {loading ? 'Authenticating...' : 'Sign In to Workspace'}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </form>
+            <div className="p-4 rounded-2xl bg-white border border-[#E2DDD5] shadow-sm flex items-start gap-3 hover:border-[#E78260]/40 transition group">
+              <div className="p-2 rounded-xl bg-[#FBEDE8] text-[#E78260] group-hover:scale-105 transition">
+                <Bot className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#292929]">AI Mock Interview</h4>
+                <p className="text-[11px] text-[#5C5850] mt-0.5">Turn-by-turn rubric feedback powered by Google Gemini.</p>
+              </div>
+            </div>
 
-          {/* Quick 1-Click Candidate Demo Button */}
-          <div className="mb-5">
-            <button
-              type="button"
-              onClick={handleDemoCandidateLogin}
-              disabled={loading}
-              className="w-full py-2 bg-[#161616] hover:bg-[#202020] text-white rounded-xl font-medium text-xs border border-[#292929] hover:border-[#3A3A3A] transition flex items-center justify-center gap-2 shadow-xs"
-            >
-              <UserCheck className="w-3.5 h-3.5 text-[#A1A1AA]" />
-              <span>1-Click Demo Candidate Login</span>
-            </button>
+            <div className="p-4 rounded-2xl bg-white border border-[#E2DDD5] shadow-sm flex items-start gap-3 hover:border-[#E78260]/40 transition group">
+              <div className="p-2 rounded-xl bg-[#FBEDE8] text-[#E78260] group-hover:scale-105 transition">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#292929]">Adaptive Study Roadmap</h4>
+                <p className="text-[11px] text-[#5C5850] mt-0.5">Day-by-day milestone pacing tailored to target companies.</p>
+              </div>
+            </div>
           </div>
 
-          <div className="relative flex py-2 items-center">
-            <div className="flex-grow border-t border-[#222222]"></div>
-            <span className="flex-shrink mx-3 text-[#52525B] text-[11px] uppercase tracking-wider">Or</span>
-            <div className="flex-grow border-t border-[#222222]"></div>
-          </div>
-
-          {/* Google OAuth Button */}
-          <div className="mt-2 space-y-3">
-            <button
-              type="button"
-              id="google-oauth-btn"
-              onClick={handleGoogleOAuthRedirect}
-              disabled={redirecting}
-              className="w-full py-2.5 px-4 bg-[#141414] hover:bg-[#1A1A1A] border border-[#292929] hover:border-[#3A3A3A] text-white rounded-xl font-medium text-xs flex items-center justify-center gap-2.5 transition disabled:opacity-70"
-            >
-              {redirecting ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <>
-                  <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
-                    <path fill="#FFFFFF" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                    <path fill="#CCCCCC" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                    <path fill="#999999" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                    <path fill="#E5E5E5" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                  </svg>
-                  <span>Continue with Google</span>
-                </>
-              )}
-            </button>
-
-            <div className="flex items-center justify-between text-xs text-[#71717A] pt-2">
-              <span>New to HireSense? <Link to="/register" className="text-white hover:underline font-medium">Create account</Link></span>
-              <Link to="/admin/login" className="text-[#71717A] hover:text-white transition-colors">Admin Portal &rarr;</Link>
+          {/* Social Proof / Readiness Indicator Card */}
+          <div className="p-4 rounded-2xl bg-white border border-[#E2DDD5] shadow-sm flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#292929] flex items-center justify-center font-bold text-white shadow-sm">
+                PRS
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-[#292929]">Alex Sharma (CSE)</span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#27AE60]/10 text-[#27AE60] border border-[#27AE60]/20">
+                    Advanced Ready
+                  </span>
+                </div>
+                <p className="text-xs text-[#5C5850]">Target: Amazon SDE-1 · Confidence: 92%</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-2xl font-black text-[#E78260]">
+                88
+              </span>
+              <span className="text-xs text-[#8E8A82]">/100</span>
             </div>
           </div>
         </div>
 
-        <p className="text-center text-xs text-[#52525B] mt-6">
-          HireSense AI securely authenticates and links your student academic workspace.
-        </p>
+        {/* Right Column: Warm Ivory & Terracotta Auth Card */}
+        <div className="lg:col-span-5 w-full">
+          <div className="bg-white border border-[#E2DDD5] rounded-[2rem] p-8 sm:p-10 shadow-xl shadow-black/[0.04] relative overflow-hidden">
+            
+            {/* Header with Logo */}
+            <div className="text-center mb-6">
+              <Link to="/" className="inline-flex items-center justify-center gap-1 mb-2 group">
+                <span className="text-2xl font-black tracking-tight text-[#292929]">HireSense</span>
+                <span className="text-2xl font-serif text-[#E78260] font-bold group-hover:rotate-45 transition-transform duration-300">*</span>
+              </Link>
+              <h2 className="text-lg font-bold text-[#292929] mt-1">
+                Sign in to your Workspace
+              </h2>
+              <p className="text-[#5C5850] text-xs mt-0.5">
+                Access your assessments, resume score, and AI interview simulator
+              </p>
+            </div>
+
+            {/* Quick 1-Click Demo Login - Prominent Top Placement */}
+            <div className="mb-5">
+              <button
+                type="button"
+                onClick={handleDemoCandidateLogin}
+                disabled={loading}
+                className="w-full py-3.5 px-4 rounded-full font-semibold text-xs transition-all duration-200 flex items-center justify-between group bg-[#292929] hover:bg-black text-white shadow-md"
+              >
+                <div className="flex items-center gap-2.5 text-left">
+                  <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#E78260]">
+                    <Zap className="w-3.5 h-3.5 text-[#E78260] fill-[#E78260]" />
+                  </div>
+                  <div>
+                    <span className="block font-bold text-white text-xs">1-Click Demo Candidate Login</span>
+                    <span className="block text-[10px] text-white/70 font-normal">Instant pre-loaded profile &amp; scores</span>
+                  </div>
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E78260] text-white transition">
+                  Fast Pass &rarr;
+                </span>
+              </button>
+            </div>
+
+            <div className="relative flex py-2 items-center mb-4">
+              <div className="flex-grow border-t border-[#E2DDD5]"></div>
+              <span className="flex-shrink mx-3 text-[#8E8A82] text-[11px] uppercase tracking-wider font-semibold">Or with credentials</span>
+              <div className="flex-grow border-t border-[#E2DDD5]"></div>
+            </div>
+
+            {error && (
+              <div className="mb-4 p-3 bg-[#FBEDE8] border border-[#E78260]/30 rounded-2xl flex items-start gap-2.5 text-[#D46845] text-xs">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#E78260]" />
+                <div className="flex-1">
+                  <span>{error}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Email/Password Form */}
+            <form onSubmit={handleEmailLogin} className="space-y-4 mb-4">
+              <div>
+                <label className="block text-[11px] font-semibold text-[#5C5850] uppercase tracking-wider mb-1.5">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-[#8E8A82] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="email"
+                    required
+                    placeholder="student@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-[#FAF8F5] border border-[#E2DDD5] text-[#292929] rounded-2xl pl-10 pr-4 py-2.5 text-xs placeholder-[#A8A39B] focus:outline-none focus:border-[#E78260] focus:ring-2 focus:ring-[#E78260]/20 transition"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-[11px] font-semibold text-[#5C5850] uppercase tracking-wider">
+                    Password
+                  </label>
+                </div>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#8E8A82] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    required
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full bg-[#FAF8F5] border border-[#E2DDD5] text-[#292929] rounded-2xl pl-10 pr-4 py-2.5 text-xs placeholder-[#A8A39B] focus:outline-none focus:border-[#E78260] focus:ring-2 focus:ring-[#E78260]/20 transition"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 px-4 bg-[#E78260] hover:bg-[#d46845] text-white rounded-full font-semibold text-xs transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#E78260]/25 disabled:opacity-50 transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>Sign In to Workspace</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Google OAuth Option */}
+            <div className="space-y-3 pt-1">
+              <button
+                type="button"
+                id="google-oauth-btn"
+                onClick={handleGoogleOAuthRedirect}
+                disabled={redirecting}
+                className="w-full py-3 px-4 bg-white hover:bg-[#FAF8F5] border border-[#E2DDD5] text-[#292929] rounded-full font-medium text-xs flex items-center justify-center gap-2.5 transition disabled:opacity-70 shadow-sm"
+              >
+                {redirecting ? (
+                  <div className="w-4 h-4 border-2 border-[#292929] border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                    </svg>
+                    <span>Continue with Google</span>
+                  </>
+                )}
+              </button>
+
+              <div className="flex items-center justify-between text-xs text-[#5C5850] pt-3 border-t border-[#E2DDD5]">
+                <span>
+                  New candidate?{' '}
+                  <Link to="/register" className="text-[#E78260] hover:text-[#d46845] font-semibold underline underline-offset-2">
+                    Create account
+                  </Link>
+                </span>
+                <Link to="/admin/login" className="text-[#5C5850] hover:text-[#292929] transition-colors flex items-center gap-1 font-medium">
+                  Admin Portal &rarr;
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-center text-[11px] text-[#8E8A82] mt-4 flex items-center justify-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#E78260]" />
+            <span>Encrypted with TLS 1.3 &amp; Stateless JWT Authentication</span>
+          </p>
+        </div>
       </div>
     </div>
   );

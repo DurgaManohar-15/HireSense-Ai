@@ -3,73 +3,83 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   HireSense AI — Premium Multi-Depth Design System
-   Inspired by Linear, Vercel, Raycast & modern AI SaaS Copilots
+   HireSense AI — Warm Ivory & Terracotta Editorial Design System
+   Inspired by "Mindly" Warm Organic & Modern Editorial Aesthetics
+   Colors: Warm Ivory (#F3EFE6), Electric Black (#292929), Terracotta (#E78260)
    ========================================================================== */
 
 :root {
-  color-scheme: dark;
-  --font-main: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+  --font-main: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Playfair Display', 'Newsreader', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Layered Dark Surfaces */
-  --background: #05070A;
-  --background-subtle: #080B0F;
-  --surface: #0D1217;
-  --surface-card: #10161C;
-  --surface-elevated: #151B22;
-  --surface-well: #11171D;
-  --surface-hover: #181E25;
-  --input-bg: #11171D;
+  /* Mindly Warm Canvas & Surfaces */
+  --background: #F3EFE6;
+  --background-subtle: #FAF8F5;
+  --surface: #FFFFFF;
+  --surface-card: #FFFFFF;
+  --surface-elevated: #FAF8F5;
+  --surface-well: #EFE9DE;
+  --surface-hover: #F8F5EE;
+  --input-bg: #FAF8F5;
 
-  /* Borders */
-  --border-default: #252C34;
-  --border-card: #252D35;
-  --border-secondary: #303840;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-gold: rgba(232, 201, 130, 0.30);
-  --border-hover: rgba(232, 201, 130, 0.40);
+  /* Warm Neutral Borders */
+  --border-default: #E2DDD5;
+  --border-card: #E2DDD5;
+  --border-secondary: #D8D1C5;
+  --border-subtle: #EBE5DB;
+  --border-warm: #E2DDD5;
+  --border-terracotta: rgba(231, 130, 96, 0.35);
 
   /* Typography */
-  --text-primary: #F7F7F5;
-  --text-secondary: #A9B0BA;
-  --text-muted: #68717D;
-  --text-dim: #4B5563;
+  --text-primary: #292929;
+  --text-secondary: #5C5850;
+  --text-muted: #8E8A82;
+  --text-dim: #A8A39B;
 
-  /* Champagne Gold Brand Accent */
-  --gold-primary: #E8C982;
-  --gold-light: #F5DFA8;
-  --gold-dark: #B18D4F;
-  --gold-soft: rgba(232, 201, 130, 0.10);
-  --gold-border: rgba(232, 201, 130, 0.30);
-  --gold-glow: rgba(232, 201, 130, 0.12);
+  /* Terracotta Brand Accent */
+  --terracotta-primary: #E78260;
+  --terracotta-light: #FBEDE8;
+  --terracotta-dark: #D46845;
+  --terracotta-glow: rgba(231, 130, 96, 0.20);
+  --terracotta-soft: rgba(231, 130, 96, 0.10);
+  
+  /* Backward-compatible gold alias mapped to warm terracotta/amber */
+  --gold-primary: #E78260;
+  --gold-light: #FBEDE8;
+  --gold-dark: #D46845;
+  --gold-soft: rgba(231, 130, 96, 0.10);
+  --gold-border: rgba(231, 130, 96, 0.35);
+  --gold-glow: rgba(231, 130, 96, 0.20);
 
   /* Secondary Semantic / Data Colors */
-  --color-teal: #20D3C2;
-  --color-green: #35D07F;
-  --color-red: #FF5A5F;
-  --color-blue: #5D9CFF;
-  --color-purple: #9B7CFF;
-  --status-success: #35D07F;
-  --status-warning: #F2B84B;
-  --status-danger: #FF5A5F;
-  --status-info: #5D9CFF;
-  --status-teal: #20D3C2;
+  --color-teal: #1DBB9E;
+  --color-green: #27AE60;
+  --color-red: #E74C3C;
+  --color-blue: #3B82F6;
+  --color-purple: #8B5CF6;
+  --status-success: #27AE60;
+  --status-warning: #E67E22;
+  --status-danger: #E74C3C;
+  --status-info: #3B82F6;
+  --status-teal: #1DBB9E;
 
-  /* Buttons */
-  --btn-primary-bg: #E8C982;
-  --btn-primary-text: #05070A;
-  --btn-primary-hover: #F5DFA8;
+  /* Primary Button: Terracotta Pill */
+  --btn-primary-bg: #E78260;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #D46845;
 
-  --btn-secondary-bg: #10161C;
-  --btn-secondary-text: #F7F7F5;
-  --btn-secondary-border: #303840;
-  --btn-secondary-hover: #151B22;
+  /* Secondary Button: Electric Black */
+  --btn-secondary-bg: #292929;
+  --btn-secondary-text: #FFFFFF;
+  --btn-secondary-border: #292929;
+  --btn-secondary-hover: #1A1A1A;
 
   /* Shadows & Depth */
-  --shadow-card: 0 18px 50px rgba(0, 0, 0, 0.30);
-  --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.45);
-  --glow-gold: 0 0 24px -4px rgba(232, 201, 130, 0.22);
+  --shadow-card: 0 10px 30px -5px rgba(41, 41, 41, 0.05);
+  --shadow-elevated: 0 20px 40px -10px rgba(41, 41, 41, 0.08);
+  --glow-terracotta: 0 10px 25px -3px rgba(231, 130, 96, 0.28);
 
   font-family: var(--font-main);
   background-color: var(--background);
@@ -80,49 +90,160 @@
    Global Canvas & Typography Smoothing
    ========================================================================== */
 html {
-  height: 100%;
-  background-color: var(--background) !important;
-  color: #F7F7F5 !important;
+  min-height: 100%;
+  background-color: #F3EFE6 !important;
+  color: #292929 !important;
   scroll-behavior: smooth;
-  overflow: hidden;
 }
 
 body {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  background: radial-gradient(circle at 70% 10%, rgba(232, 201, 130, 0.05), transparent 35%), #05070A !important;
-  color: #F7F7F5 !important;
+  background-color: #F3EFE6 !important;
+  color: #292929 !important;
   font-family: var(--font-main);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
-/* Custom Sleek Dark Scrollbar (Track: #07090C, Thumb: #252B32, Hover: #3A424B) */
+/* Custom Warm Ivory Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090C;
+  background: #EFE9DE;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #252B32;
+  background: #D5CDC0;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3A424B;
+  background: #BAAF9F;
+}
+
+/* ==========================================================================
+   Global Warm Ivory & Terracotta Theme Mappings
+   Translates legacy dark palette classes into the clean, warm editorial design
+   Warm Ivory (#F3EFE6), Electric Black (#292929), Terracotta (#E78260)
+   ========================================================================== */
+
+/* Outer Canvas Wrappers */
+.bg-\[\#05070A\],
+.bg-\[\#000000\],
+.bg-\[\#080808\],
+.bg-\[\#070A0D\],
+.bg-\[\#070A12\] {
+  background-color: #F3EFE6 !important;
+  color: #292929 !important;
+}
+
+/* Primary Cards -> Pure Soft White */
+.bg-\[\#10161C\],
+.bg-\[\#0D1217\],
+.bg-\[\#101010\],
+.bg-\[\#0D1117\],
+.bg-\[\#161B22\],
+.bg-slate-900,
+.bg-slate-900\/60,
+.bg-slate-900\/70,
+.bg-slate-900\/80,
+.bg-slate-900\/85,
+.bg-slate-900\/90 {
+  background-color: #FFFFFF !important;
+  border-color: #E2DDD5 !important;
+  color: #292929 !important;
+  box-shadow: 0 4px 20px -2px rgba(41, 41, 41, 0.04) !important;
+}
+
+/* Elevated Sub-surfaces & Wells -> Warm Ivory Light (#FAF8F5) */
+.bg-\[\#11171D\],
+.bg-\[\#151B22\],
+.bg-\[\#141414\],
+.bg-\[\#181818\],
+.bg-\[\#181E25\],
+.bg-\[\#1F2731\],
+.bg-\[\#14191F\],
+.bg-slate-950,
+.bg-slate-950\/70,
+.bg-slate-950\/80 {
+  background-color: #FAF8F5 !important;
+  border-color: #E2DDD5 !important;
+}
+
+/* Borders -> Warm Sand Border (#E2DDD5) */
+.border-\[\#252D35\],
+.border-\[\#252C34\],
+.border-\[\#222222\],
+.border-\[\#292929\],
+.border-\[\#303840\],
+.border-\[\#3A3A3A\],
+.border-slate-800,
+.border-slate-800\/80,
+.border-slate-800\/90,
+.border-slate-700,
+.border-slate-700\/80 {
+  border-color: #E2DDD5 !important;
+}
+
+/* Primary text & Headings -> Electric Black (#292929) */
+.text-\[\#F7F7F5\],
+.text-white:not(button *):not(.bg-\[\#E78260\] *):not(.bg-\[\#292929\] *):not(.btn-primary *):not(.btn-secondary *):not(button.bg-\[\#292929\]):not(button.bg-\[\#E78260\]):not([class*="bg-emerald-500"]):not([class*="bg-indigo-600"]):not([class*="bg-blue-600"]):not([class*="bg-red-"]):not(.rounded-full.bg-\[\#E78260\]):not(.rounded-full.bg-\[\#292929\]):not(.text-white-forced) {
+  color: #292929 !important;
+}
+
+/* Secondary & Muted text -> Warm Charcoal (#5C5850 & #8E8A82) */
+.text-\[\#A9B0BA\],
+.text-\[\#A1A1AA\],
+.text-slate-400,
+.text-slate-300 {
+  color: #5C5850 !important;
+}
+
+.text-\[\#68717D\],
+.text-\[\#71717A\],
+.text-slate-500 {
+  color: #8E8A82 !important;
+}
+
+/* Champagne Gold & Accent -> Terracotta (#E78260) */
+.text-\[\#E8C982\],
+.text-\[\#E7C98A\],
+.text-\[\#F5DFA8\] {
+  color: #E78260 !important;
+}
+
+.bg-\[\#E8C982\],
+.bg-\[\#E7C98A\] {
+  background-color: #E78260 !important;
+  color: #FFFFFF !important;
+}
+
+.bg-\[\#E8C982\]\/10,
+.bg-\[\#E8C982\]\/15,
+.bg-\[\#E8C982\]\/20,
+.bg-\[\#E8C982\]\/\[0\.14\] {
+  background-color: #FBEDE8 !important;
+  color: #E78260 !important;
+}
+
+.border-\[\#E8C982\]\/25,
+.border-\[\#E8C982\]\/30,
+.border-\[\#E8C982\]\/35,
+.border-\[\#E8C982\]\/40,
+.border-\[\#E8C982\]\/50,
+.border-\[\#E8C982\]\/\[0\.18\] {
+  border-color: rgba(231, 130, 96, 0.35) !important;
 }
 
 /* ==========================================================================
@@ -208,64 +329,55 @@ html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]):not(#resume-preview
 }
 
 /* ==========================================================================
-   Button System — Champagne Gold & Dark Surfaces
+   Button System — Terracotta & Electric Black Pills
    ========================================================================== */
 
-/* Primary Button: Champagne Gold */
+/* Primary Button: Terracotta Pill */
 .btn-primary,
-.btn-gold,
-html.dark button.bg-blue-600,
-html.dark a.bg-blue-600 {
+.btn-terracotta,
+.btn-gold {
   background-color: var(--btn-primary-bg) !important;
-  color: var(--btn-primary-text) !important;
-  border: 1px solid rgba(231, 201, 138, 0.40) !important;
-  border-radius: 12px;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(231, 130, 96, 0.40) !important;
+  border-radius: 9999px;
   font-weight: 600;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 20px -4px rgba(231, 201, 138, 0.25);
+  box-shadow: 0 4px 15px rgba(231, 130, 96, 0.28);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary:hover,
-.btn-gold:hover,
-html.dark button.bg-blue-600:hover,
-html.dark a.bg-blue-600:hover {
+.btn-terracotta:hover,
+.btn-gold:hover {
   background-color: var(--btn-primary-hover) !important;
-  color: #05070A !important;
+  color: #FFFFFF !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(231, 201, 138, 0.35);
+  box-shadow: 0 6px 22px rgba(231, 130, 96, 0.36);
 }
 
 .btn-primary:active,
-.btn-gold:active,
-html.dark button.bg-blue-600:active,
-html.dark a.bg-blue-600:active {
+.btn-terracotta:active,
+.btn-gold:active {
   transform: translateY(0);
 }
 
-/* Secondary Button: Elevated Dark Surface */
+/* Secondary Button: Electric Black Pill */
 .btn-secondary,
-.btn-secondary-dark,
-html.dark button.bg-white:not(#resume-preview-sheet *),
-html.dark a.bg-white:not(#resume-preview-sheet *),
-html.dark button.bg-slate-50:not(#resume-preview-sheet *),
-html.dark a.bg-slate-50:not(#resume-preview-sheet *) {
-  background-color: var(--surface) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border-default) !important;
-  border-radius: 12px;
+.btn-electric,
+.btn-secondary-dark {
+  background-color: #292929 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #292929 !important;
+  border-radius: 9999px;
   font-weight: 500;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(41, 41, 41, 0.15);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-secondary:hover,
-.btn-secondary-dark:hover,
-html.dark button.bg-white:hover:not(#resume-preview-sheet *),
-html.dark a.bg-white:hover:not(#resume-preview-sheet *),
-html.dark button.bg-slate-50:hover:not(#resume-preview-sheet *),
-html.dark a.bg-slate-50:hover:not(#resume-preview-sheet *) {
-  background-color: var(--surface-hover) !important;
-  border-color: var(--border-gold) !important;
+.btn-electric:hover,
+.btn-secondary-dark:hover {
+  background-color: #171717 !important;
+  border-color: #171717 !important;
   color: #FFFFFF !important;
   transform: translateY(-1px);
 }
@@ -445,21 +557,21 @@ html.dark .rounded-3xl:not(#resume-preview-sheet *):not(button):not(input):not(s
 }
 
 .glass-nav {
-  background: rgba(5, 7, 10, 0.85);
+  background: rgba(243, 239, 230, 0.90);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-default);
 }
 
 .glass-pill {
-  background: rgba(16, 20, 25, 0.80);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-default);
 }
 
 .glass-card {
-  background: rgba(17, 22, 28, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-default);
