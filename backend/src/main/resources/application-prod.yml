@@ -50,14 +50,14 @@ hiresense:
     provider: ${AI_PROVIDER:gemini} # 'gemini' or 'mock'
     gemini:
       api-key: ${GEMINI_API_KEY:}
-      model: ${GEMINI_MODEL:gemini-1.5-flash}
+      model: ${GEMINI_MODEL:gemini-2.5-flash}
   oauth:
     google:
       client-id: ${GOOGLE_CLIENT_ID:62941711068-c5b0f2nefg19kat677p00dnf5j4r7o9m.apps.googleusercontent.com}
       client-secret: ${GOOGLE_CLIENT_SECRET:}
       redirect-uri: ${GOOGLE_REDIRECT_URI:https://hiresense-ai-production-2ea510c0.up.railway.app/api/v1/auth/google/callback}
-      frontend-redirect-url: ${FRONTEND_URL:https://*.vercel.app/auth/callback}
-      frontend-login-url: ${FRONTEND_LOGIN_URL:https://*.vercel.app/login}
+      frontend-redirect-url: ${FRONTEND_URL:http://localhost:5173/auth/callback}
+      frontend-login-url: ${FRONTEND_LOGIN_URL:http://localhost:5173/login}
   admin:
     initial:
       auto-create: ${ADMIN_AUTO_CREATE:true}

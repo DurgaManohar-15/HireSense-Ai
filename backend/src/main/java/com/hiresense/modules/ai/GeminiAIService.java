@@ -39,7 +39,7 @@ public class GeminiAIService implements AIService {
     @Value("${hiresense.ai.gemini.api-key:}")
     private String apiKey;
 
-    @Value("${hiresense.ai.gemini.model:gemini-1.5-flash}")
+    @Value("${hiresense.ai.gemini.model:gemini-2.5-flash}")
     private String modelName;
 
     @Override
@@ -290,9 +290,17 @@ public class GeminiAIService implements AIService {
 
     // Helper to call Gemini REST API and sanitize response
     private String callGeminiApi(String prompt) throws Exception {
-        String activeModel = (modelName == null || modelName.isBlank() || modelName.contains("3.6"))
-                ? "gemini-1.5-flash" : modelName.trim();
-        return executeGeminiRequest(prompt, activeModel);
+        String activeModel = (modelName == null || modelName.isBlank() || modelName.contains("1.5") || modelName.contains("3.6"))
+                ? "gemini-2.5-flash" : modelName.trim();
+        try {
+            return executeGeminiRequest(prompt, activeModel);
+        } catch (Exception ex) {
+            if ("gemini-2.5-flash".equals(activeModel)) {
+                log.warn("Gemini 2.5-flash request encountered error: {}. Retrying with gemini-flash-latest...", ex.getMessage());
+                return executeGeminiRequest(prompt, "gemini-flash-latest");
+            }
+            throw ex;
+        }
     }
 
     private String executeGeminiRequest(String prompt, String targetModel) throws Exception {

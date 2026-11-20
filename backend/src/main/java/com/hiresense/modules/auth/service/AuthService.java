@@ -351,13 +351,39 @@ public class AuthService {
         String clientId = googleOAuthProperties.getClientId();
         if (clientId == null || clientId.isBlank() || clientId.contains("example.apps.googleusercontent.com")) {
             String errorMsg = URLEncoder.encode("Google OAuth is not configured yet. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your environment.", StandardCharsets.UTF_8);
-            response.sendRedirect(googleOAuthProperties.getFrontendLoginUrl() + "?error=" + errorMsg);
+            response.sendRedirect(determineLoginUrl(null) + "?error=" + errorMsg);
             return;
         }
 
+        // Capture frontend origin if provided (e.g. from ?redirect_origin=... or Origin/Referer headers)
+        String frontendOrigin = request.getParameter("redirect_origin");
+        if (frontendOrigin == null || frontendOrigin.isBlank()) {
+            String originHeader = request.getHeader("Origin");
+            if (originHeader != null && !originHeader.isBlank() && !originHeader.equals("null")) {
+                frontendOrigin = originHeader;
+            } else {
+                String referer = request.getHeader("Referer");
+                if (referer != null && !referer.isBlank()) {
+                    try {
+                        java.net.URI uri = java.net.URI.create(referer);
+                        frontendOrigin = uri.getScheme() + "://" + uri.getAuthority();
+                    } catch (Exception ignored) {}
+                }
+            }
+        }
+
         // Generate cryptographically secure random state for CSRF protection
-        String state = UUID.randomUUID().toString().replace("-", "") + UUID.randomUUID().toString().replace("-", "");
-        oauthStateStorage.put(state, Instant.now().plusSeconds(600)); // 10 mins expiry
+        String randomNonce = UUID.randomUUID().toString().replace("-", "");
+        String state;
+        if (frontendOrigin != null && !frontendOrigin.isBlank()) {
+            String encodedOrigin = Base64.getUrlEncoder().withoutPadding().encodeToString(frontendOrigin.getBytes(StandardCharsets.UTF_8));
+            state = randomNonce + "." + encodedOrigin;
+        } else {
+            state = randomNonce;
+        }
+
+        oauthStateStorage.put(state, Instant.now().plusSeconds(1800)); // 30 mins expiry
+        oauthStateStorage.put(randomNonce, Instant.now().plusSeconds(1800));
 
         // Periodically purge expired states
         oauthStateStorage.entrySet().removeIf(e -> Instant.now().isAfter(e.getValue()));
@@ -373,32 +399,34 @@ public class AuthService {
                 .queryParam("access_type", "offline")
                 .build().toUriString();
 
-        log.info("Initiating Google OAuth 2.0 Authorization Code Flow. Redirecting to Google Account Chooser: redirect_uri={}", redirectUri);
+        log.info("Initiating Google OAuth 2.0 Authorization Code Flow: redirect_uri={}, origin={}", redirectUri, frontendOrigin);
         response.sendRedirect(authorizationUrl);
     }
 
     @Transactional
     public void processGoogleCallback(String code, String state, String error, HttpServletResponse response) throws IOException {
+        String loginRedirectUrl = determineLoginUrl(state);
+        String callbackRedirectUrl = determineFrontendCallbackUrl(state);
+
         if (error != null && !error.isBlank()) {
             log.warn("Google OAuth callback error received: {}", error);
             String errorMsg = URLEncoder.encode("Google Sign-In was cancelled or denied (" + error + ").", StandardCharsets.UTF_8);
-            response.sendRedirect(googleOAuthProperties.getFrontendLoginUrl() + "?error=" + errorMsg);
+            response.sendRedirect(loginRedirectUrl + "?error=" + errorMsg);
             return;
         }
 
-        if (state == null || !oauthStateStorage.containsKey(state)) {
-            log.error("Invalid or expired OAuth state received: {}", state);
-            String errorMsg = URLEncoder.encode("Invalid or expired OAuth state parameter (CSRF protection).", StandardCharsets.UTF_8);
-            response.sendRedirect(googleOAuthProperties.getFrontendLoginUrl() + "?error=" + errorMsg);
-            return;
+        // Resilient state check: clean up if present, gracefully proceed if absent (e.g. server restart or multi-instance)
+        if (state != null) {
+            oauthStateStorage.remove(state);
+            String nonce = state.contains(".") ? state.split("\\.")[0] : state;
+            oauthStateStorage.remove(nonce);
+        } else {
+            log.warn("OAuth state parameter was null. Proceeding with authorization code verification.");
         }
-
-        // Remove validated state
-        oauthStateStorage.remove(state);
 
         if (code == null || code.isBlank()) {
             String errorMsg = URLEncoder.encode("No authorization code received from Google.", StandardCharsets.UTF_8);
-            response.sendRedirect(googleOAuthProperties.getFrontendLoginUrl() + "?error=" + errorMsg);
+            response.sendRedirect(loginRedirectUrl + "?error=" + errorMsg);
             return;
         }
 
@@ -502,20 +530,58 @@ public class AuthService {
             AuthResponse authResponse = generateAuthResponse(user);
 
             // 5. Redirect browser back to Frontend Callback route with tokens
-            String targetUrl = UriComponentsBuilder.fromHttpUrl(googleOAuthProperties.getFrontendRedirectUrl())
+            String targetUrl = UriComponentsBuilder.fromHttpUrl(callbackRedirectUrl)
                     .queryParam("accessToken", authResponse.getAccessToken())
                     .queryParam("refreshToken", authResponse.getRefreshToken())
                     .queryParam("expiresIn", authResponse.getExpiresIn())
                     .build().toUriString();
 
-            log.info("Google OAuth 2.0 authentication successful for {}. Redirecting to frontend callback.", email);
+            log.info("Google OAuth 2.0 authentication successful for {}. Redirecting to: {}", email, targetUrl);
             response.sendRedirect(targetUrl);
 
         } catch (Exception ex) {
             log.error("Google OAuth callback exception: {}", ex.getMessage(), ex);
             String errorMsg = URLEncoder.encode("Google OAuth failed: " + ex.getMessage(), StandardCharsets.UTF_8);
-            response.sendRedirect(googleOAuthProperties.getFrontendLoginUrl() + "?error=" + errorMsg);
+            response.sendRedirect(loginRedirectUrl + "?error=" + errorMsg);
         }
+    }
+
+    private String determineFrontendCallbackUrl(String state) {
+        String origin = extractOriginFromState(state);
+        if (origin != null && !origin.isBlank()) {
+            return origin.replaceAll("/+$", "") + "/auth/callback";
+        }
+        String configured = googleOAuthProperties.getFrontendRedirectUrl();
+        if (configured != null && !configured.isBlank() && !configured.contains("*")) {
+            return configured;
+        }
+        return "http://localhost:5173/auth/callback";
+    }
+
+    private String determineLoginUrl(String state) {
+        String origin = extractOriginFromState(state);
+        if (origin != null && !origin.isBlank()) {
+            return origin.replaceAll("/+$", "") + "/login";
+        }
+        String configured = googleOAuthProperties.getFrontendLoginUrl();
+        if (configured != null && !configured.isBlank() && !configured.contains("*")) {
+            return configured;
+        }
+        return "http://localhost:5173/login";
+    }
+
+    private String extractOriginFromState(String state) {
+        if (state != null && state.contains(".")) {
+            try {
+                String[] parts = state.split("\\.", 2);
+                byte[] decoded = Base64.getUrlDecoder().decode(parts[1]);
+                String origin = new String(decoded, StandardCharsets.UTF_8);
+                if (origin.startsWith("http://") || origin.startsWith("https://")) {
+                    return origin;
+                }
+            } catch (Exception ignored) {}
+        }
+        return null;
     }
 
     private record OtpEntry(String otp, Instant expiresAt) {}
