@@ -47,7 +47,7 @@ hiresense:
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS}
   ai:
-    provider: ${AI_PROVIDER:mock} # 'mock' or 'gemini'
+    provider: ${AI_PROVIDER:gemini} # 'gemini' or 'mock'
     gemini:
       api-key: ${GEMINI_API_KEY:}
       model: ${GEMINI_MODEL:gemini-1.5-flash}
