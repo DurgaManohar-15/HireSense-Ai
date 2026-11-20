@@ -13,10 +13,10 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://${MYSQLHOST:mysql.railway.internal}:${MYSQLPORT:3306}/${MYSQLDATABASE:railway}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
-    username: ${DB_USERNAME:${MYSQLUSER:root}}
-    password: ${DB_PASSWORD:${MYSQLPASSWORD:}}
-    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    url: ${DB_URL:jdbc:h2:file:./storage/data/hiresense_db;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    driver-class-name: ${DB_DRIVER:org.h2.Driver}
     hikari:
       maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
       minimum-idle: ${DB_POOL_MIN_IDLE:2}
@@ -29,12 +29,8 @@ spring:
       ddl-auto: update
     show-sql: false
     open-in-view: false
-    properties:
-      hibernate:
-        format_sql: false
-        dialect: org.hibernate.dialect.MySQLDialect
   flyway:
-    enabled: true
+    enabled: ${FLYWAY_ENABLED:false}
     baseline-on-migrate: true
     locations: classpath:db/migration
     clean-disabled: true
