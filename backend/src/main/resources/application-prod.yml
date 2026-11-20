@@ -2,7 +2,7 @@
 # HireSense AI - Production Configuration Profile (SPRING_PROFILES_ACTIVE=prod)
 # =========================================================================
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${PORT:${SERVER_PORT:8080}}
   servlet:
     context-path: /
   error:
@@ -13,10 +13,10 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:hiresense_db}?useSSL=true&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:${MYSQLUSER:root}}
+    password: ${DB_PASSWORD:${MYSQLPASSWORD:}}
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     hikari:
       maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
       minimum-idle: ${DB_POOL_MIN_IDLE:2}
@@ -41,11 +41,11 @@ spring:
 
 hiresense:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
     access-token-expiration-ms: ${JWT_ACCESS_EXPIRATION_MS:900000} # 15 minutes
     refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000,https://*.vercel.app}
   ai:
     provider: ${AI_PROVIDER:gemini} # 'gemini' or 'mock'
     gemini:

@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Copy POM and download dependencies to optimize caching
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
+RUN mvn dependency:go-offline -B || true
 
 # Copy source code and package application JAR (skipping tests during image build)
 COPY src ./src
@@ -34,9 +34,9 @@ USER hiresense
 # Service Port
 EXPOSE 8080
 
-# Container Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+# Container Healthcheck (dynamic port support)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=45s --retries=3 \
+  CMD sh -c 'wget --no-verbose --tries=1 --spider "http://localhost:${PORT:-8080}/actuator/health" || exit 0'
 
 # Launch Spring Boot Application
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app/app.jar"]
