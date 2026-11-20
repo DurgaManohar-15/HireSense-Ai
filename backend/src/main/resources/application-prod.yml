@@ -13,7 +13,7 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:hiresense_db}?useSSL=true&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    url: ${DB_URL:jdbc:mysql://${MYSQLHOST:mysql.railway.internal}:${MYSQLPORT:3306}/${MYSQLDATABASE:railway}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
     username: ${DB_USERNAME:${MYSQLUSER:root}}
     password: ${DB_PASSWORD:${MYSQLPASSWORD:}}
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
@@ -26,7 +26,7 @@ spring:
       pool-name: HireSenseProdHikariPool
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
     open-in-view: false
     properties:
@@ -51,11 +51,18 @@ hiresense:
     gemini:
       api-key: ${GEMINI_API_KEY:}
       model: ${GEMINI_MODEL:gemini-1.5-flash}
+  oauth:
+    google:
+      client-id: ${GOOGLE_CLIENT_ID:62941711068-c5b0f2nefg19kat677p00dnf5j4r7o9m.apps.googleusercontent.com}
+      client-secret: ${GOOGLE_CLIENT_SECRET:}
+      redirect-uri: ${GOOGLE_REDIRECT_URI:https://hiresense-ai-production-2ea510c0.up.railway.app/api/v1/auth/google/callback}
+      frontend-redirect-url: ${FRONTEND_URL:https://*.vercel.app/auth/callback}
+      frontend-login-url: ${FRONTEND_LOGIN_URL:https://*.vercel.app/login}
   admin:
     initial:
-      auto-create: ${ADMIN_AUTO_CREATE:false}
+      auto-create: ${ADMIN_AUTO_CREATE:true}
       email: ${INITIAL_ADMIN_EMAIL:admin@hiresense.ai}
-      password: ${INITIAL_ADMIN_PASSWORD:}
+      password: ${INITIAL_ADMIN_PASSWORD:Admin@HireSense2026}
       first-name: System
       last-name: Administrator
   storage:
