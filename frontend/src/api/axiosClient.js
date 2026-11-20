@@ -1,6 +1,19 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  if (typeof window !== 'undefined') {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://localhost:8080/api/v1';
+    }
+    return 'https://hiresense-ai-production-2ea510c0.up.railway.app/api/v1';
+  }
+  return '/api/v1';
+};
+
+const API_BASE_URL = getBaseUrl();
 
 const axiosClient = axios.create({
   baseURL: API_BASE_URL,

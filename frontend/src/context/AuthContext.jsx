@@ -19,10 +19,17 @@ export const AuthProvider = ({ children }) => {
           }
         } catch (err) {
           console.error('Failed to restore session:', err);
-          localStorage.removeItem('hiresense_token');
-          localStorage.removeItem('hiresense_refresh_token');
-          localStorage.removeItem('hiresense_user');
-          setUser(null);
+          if (err.response?.status === 401) {
+            localStorage.removeItem('hiresense_token');
+            localStorage.removeItem('hiresense_refresh_token');
+            localStorage.removeItem('hiresense_user');
+            setUser(null);
+          } else {
+            const saved = localStorage.getItem('hiresense_user');
+            if (saved) {
+              try { setUser(JSON.parse(saved)); } catch (e) {}
+            }
+          }
         }
       }
       setLoading(false);

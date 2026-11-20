@@ -103,9 +103,7 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         identifier,
-                        request.getPassword()
-                )
-        );
+                        request.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
@@ -200,7 +198,8 @@ public class AuthService {
         String phone = request.getPhoneNumber().trim();
         // Generate 6-digit OTP (for dev/local, fixed or logged)
         String otp = String.format("%06d", new Random().nextInt(999999));
-        // For convenience and testing consistency, set 123456 as standard fallback test OTP or generated
+        // For convenience and testing consistency, set 123456 as standard fallback test
+        // OTP or generated
         Instant expiresAt = Instant.now().plusSeconds(300); // 5 minutes
         otpStorage.put(phone, new OtpEntry(otp, expiresAt));
 
@@ -314,8 +313,8 @@ public class AuthService {
 
     private AuthResponse generateAuthResponse(User user) {
         UserPrincipal userPrincipal = UserPrincipal.create(user);
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userPrincipal,
+                null, userPrincipal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = tokenProvider.generateToken(authentication);
@@ -347,15 +346,19 @@ public class AuthService {
                 .build();
     }
 
-    public void initiateGoogleAuthorization(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void initiateGoogleAuthorization(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         String clientId = googleOAuthProperties.getClientId();
         if (clientId == null || clientId.isBlank() || clientId.contains("example.apps.googleusercontent.com")) {
-            String errorMsg = URLEncoder.encode("Google OAuth is not configured yet. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your environment.", StandardCharsets.UTF_8);
+            String errorMsg = URLEncoder.encode(
+                    "Google OAuth is not configured yet. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your environment.",
+                    StandardCharsets.UTF_8);
             response.sendRedirect(determineLoginUrl(null) + "?error=" + errorMsg);
             return;
         }
 
-        // Capture frontend origin if provided (e.g. from ?redirect_origin=... or Origin/Referer headers)
+        // Capture frontend origin if provided (e.g. from ?redirect_origin=... or
+        // Origin/Referer headers)
         String frontendOrigin = request.getParameter("redirect_origin");
         if (frontendOrigin == null || frontendOrigin.isBlank()) {
             String originHeader = request.getHeader("Origin");
@@ -367,7 +370,8 @@ public class AuthService {
                     try {
                         java.net.URI uri = java.net.URI.create(referer);
                         frontendOrigin = uri.getScheme() + "://" + uri.getAuthority();
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
             }
         }
@@ -376,7 +380,8 @@ public class AuthService {
         String randomNonce = UUID.randomUUID().toString().replace("-", "");
         String state;
         if (frontendOrigin != null && !frontendOrigin.isBlank()) {
-            String encodedOrigin = Base64.getUrlEncoder().withoutPadding().encodeToString(frontendOrigin.getBytes(StandardCharsets.UTF_8));
+            String encodedOrigin = Base64.getUrlEncoder().withoutPadding()
+                    .encodeToString(frontendOrigin.getBytes(StandardCharsets.UTF_8));
             state = randomNonce + "." + encodedOrigin;
         } else {
             state = randomNonce;
@@ -399,23 +404,27 @@ public class AuthService {
                 .queryParam("access_type", "offline")
                 .build().toUriString();
 
-        log.info("Initiating Google OAuth 2.0 Authorization Code Flow: redirect_uri={}, origin={}", redirectUri, frontendOrigin);
+        log.info("Initiating Google OAuth 2.0 Authorization Code Flow: redirect_uri={}, origin={}", redirectUri,
+                frontendOrigin);
         response.sendRedirect(authorizationUrl);
     }
 
     @Transactional
-    public void processGoogleCallback(String code, String state, String error, HttpServletResponse response) throws IOException {
+    public void processGoogleCallback(String code, String state, String error, HttpServletResponse response)
+            throws IOException {
         String loginRedirectUrl = determineLoginUrl(state);
         String callbackRedirectUrl = determineFrontendCallbackUrl(state);
 
         if (error != null && !error.isBlank()) {
             log.warn("Google OAuth callback error received: {}", error);
-            String errorMsg = URLEncoder.encode("Google Sign-In was cancelled or denied (" + error + ").", StandardCharsets.UTF_8);
+            String errorMsg = URLEncoder.encode("Google Sign-In was cancelled or denied (" + error + ").",
+                    StandardCharsets.UTF_8);
             response.sendRedirect(loginRedirectUrl + "?error=" + errorMsg);
             return;
         }
 
-        // Resilient state check: clean up if present, gracefully proceed if absent (e.g. server restart or multi-instance)
+        // Resilient state check: clean up if present, gracefully proceed if absent
+        // (e.g. server restart or multi-instance)
         if (state != null) {
             oauthStateStorage.remove(state);
             String nonce = state.contains(".") ? state.split("\\.")[0] : state;
@@ -443,7 +452,8 @@ public class AuthService {
             body.add("grant_type", "authorization_code");
 
             HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(body, headers);
-            ResponseEntity<Map> tokenResponse = restTemplate.postForEntity("https://oauth2.googleapis.com/token", tokenRequest, Map.class);
+            ResponseEntity<Map> tokenResponse = restTemplate.postForEntity("https://oauth2.googleapis.com/token",
+                    tokenRequest, Map.class);
 
             if (!tokenResponse.getStatusCode().is2xxSuccessful() || tokenResponse.getBody() == null) {
                 throw new BadRequestException("Failed to exchange authorization code with Google.");
@@ -465,8 +475,7 @@ public class AuthService {
                     "https://www.googleapis.com/oauth2/v3/userinfo",
                     HttpMethod.GET,
                     userinfoRequest,
-                    Map.class
-            );
+                    Map.class);
 
             if (!userinfoResponse.getStatusCode().is2xxSuccessful() || userinfoResponse.getBody() == null) {
                 throw new BadRequestException("Failed to fetch Google user profile.");
@@ -513,7 +522,8 @@ public class AuthService {
                         .email(email)
                         .googleId(googleSub)
                         .authProvider("GOOGLE")
-                        .profilePictureUrl(picture != null ? picture : "https://api.dicebear.com/7.x/bottts/svg?seed=" + email)
+                        .profilePictureUrl(
+                                picture != null ? picture : "https://api.dicebear.com/7.x/bottts/svg?seed=" + email)
                         .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                         .firstName(firstName)
                         .lastName(lastName)
@@ -579,10 +589,12 @@ public class AuthService {
                 if (origin.startsWith("http://") || origin.startsWith("https://")) {
                     return origin;
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         return null;
     }
 
-    private record OtpEntry(String otp, Instant expiresAt) {}
+    private record OtpEntry(String otp, Instant expiresAt) {
+    }
 }
