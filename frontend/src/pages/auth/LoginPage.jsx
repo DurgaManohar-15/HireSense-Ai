@@ -98,7 +98,12 @@ export const LoginPage = () => {
   const handleGoogleOAuthRedirect = () => {
     setError('');
     setRedirecting(true);
-    const backendBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
+    let backendBaseUrl = 'https://hiresense-ai-production-2ea510c0.up.railway.app/api/v1';
+    if (typeof window !== 'undefined') {
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        backendBaseUrl = 'http://localhost:8080/api/v1';
+      }
+    }
     const origin = encodeURIComponent(window.location.origin);
     window.location.href = `${backendBaseUrl}/auth/google?redirect_origin=${origin}`;
   };

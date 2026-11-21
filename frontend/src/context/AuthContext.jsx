@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
           } else {
             const saved = localStorage.getItem('hiresense_user');
             if (saved) {
-              try { setUser(JSON.parse(saved)); } catch (e) {}
+              try { setUser(JSON.parse(saved)); } catch (e) { }
             }
           }
         }

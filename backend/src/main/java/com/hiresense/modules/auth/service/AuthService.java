@@ -376,16 +376,15 @@ public class AuthService {
             }
         }
 
+        String redirectUri = determineGoogleRedirectUri(request);
+
         // Generate cryptographically secure random state for CSRF protection
         String randomNonce = UUID.randomUUID().toString().replace("-", "");
-        String state;
-        if (frontendOrigin != null && !frontendOrigin.isBlank()) {
-            String encodedOrigin = Base64.getUrlEncoder().withoutPadding()
-                    .encodeToString(frontendOrigin.getBytes(StandardCharsets.UTF_8));
-            state = randomNonce + "." + encodedOrigin;
-        } else {
-            state = randomNonce;
-        }
+        String encodedOrigin = (frontendOrigin != null && !frontendOrigin.isBlank())
+                ? Base64.getUrlEncoder().withoutPadding().encodeToString(frontendOrigin.getBytes(StandardCharsets.UTF_8))
+                : "";
+        String encodedRedirectUri = Base64.getUrlEncoder().withoutPadding().encodeToString(redirectUri.getBytes(StandardCharsets.UTF_8));
+        String state = randomNonce + "." + encodedOrigin + "." + encodedRedirectUri;
 
         oauthStateStorage.put(state, Instant.now().plusSeconds(1800)); // 30 mins expiry
         oauthStateStorage.put(randomNonce, Instant.now().plusSeconds(1800));
@@ -393,7 +392,6 @@ public class AuthService {
         // Periodically purge expired states
         oauthStateStorage.entrySet().removeIf(e -> Instant.now().isAfter(e.getValue()));
 
-        String redirectUri = googleOAuthProperties.getRedirectUri();
         String authorizationUrl = UriComponentsBuilder.fromHttpUrl("https://accounts.google.com/o/oauth2/v2/auth")
                 .queryParam("client_id", clientId)
                 .queryParam("redirect_uri", redirectUri)
@@ -410,10 +408,11 @@ public class AuthService {
     }
 
     @Transactional
-    public void processGoogleCallback(String code, String state, String error, HttpServletResponse response)
+    public void processGoogleCallback(String code, String state, String error, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String loginRedirectUrl = determineLoginUrl(state);
         String callbackRedirectUrl = determineFrontendCallbackUrl(state);
+        String redirectUri = determineGoogleRedirectUriFromState(state, request);
 
         if (error != null && !error.isBlank()) {
             log.warn("Google OAuth callback error received: {}", error);
@@ -448,7 +447,7 @@ public class AuthService {
             body.add("code", code);
             body.add("client_id", googleOAuthProperties.getClientId());
             body.add("client_secret", googleOAuthProperties.getClientSecret());
-            body.add("redirect_uri", googleOAuthProperties.getRedirectUri());
+            body.add("redirect_uri", redirectUri);
             body.add("grant_type", "authorization_code");
 
             HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(body, headers);
@@ -583,16 +582,54 @@ public class AuthService {
     private String extractOriginFromState(String state) {
         if (state != null && state.contains(".")) {
             try {
-                String[] parts = state.split("\\.", 2);
-                byte[] decoded = Base64.getUrlDecoder().decode(parts[1]);
-                String origin = new String(decoded, StandardCharsets.UTF_8);
-                if (origin.startsWith("http://") || origin.startsWith("https://")) {
-                    return origin;
+                String[] parts = state.split("\\.");
+                if (parts.length >= 2 && !parts[1].isBlank()) {
+                    byte[] decoded = Base64.getUrlDecoder().decode(parts[1]);
+                    String origin = new String(decoded, StandardCharsets.UTF_8);
+                    if (origin.startsWith("http://") || origin.startsWith("https://")) {
+                        return origin;
+                    }
                 }
             } catch (Exception ignored) {
             }
         }
         return null;
+    }
+
+    private String determineGoogleRedirectUri(HttpServletRequest request) {
+        String configured = googleOAuthProperties.getRedirectUri();
+        if (request != null) {
+            String forwardedHost = request.getHeader("X-Forwarded-Host");
+            String host = (forwardedHost != null && !forwardedHost.isBlank()) ? forwardedHost : request.getHeader("Host");
+            if (host != null) {
+                if (host.contains("railway.app")) {
+                    return "https://" + host + "/api/v1/auth/google/callback";
+                }
+                if (host.contains("localhost") || host.contains("127.0.0.1")) {
+                    return "http://localhost:8080/api/v1/auth/google/callback";
+                }
+            }
+        }
+        if (configured != null && !configured.isBlank()) {
+            return configured;
+        }
+        return "https://hiresense-ai-production-2ea510c0.up.railway.app/api/v1/auth/google/callback";
+    }
+
+    private String determineGoogleRedirectUriFromState(String state, HttpServletRequest request) {
+        if (state != null && state.contains(".")) {
+            String[] parts = state.split("\\.");
+            if (parts.length >= 3 && !parts[2].isBlank()) {
+                try {
+                    byte[] decoded = Base64.getUrlDecoder().decode(parts[2]);
+                    String uri = new String(decoded, StandardCharsets.UTF_8);
+                    if (uri.startsWith("http://") || uri.startsWith("https://")) {
+                        return uri;
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+        return determineGoogleRedirectUri(request);
     }
 
     private record OtpEntry(String otp, Instant expiresAt) {

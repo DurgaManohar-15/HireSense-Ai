@@ -45,10 +45,11 @@ public class AuthController {
 
     @GetMapping("/google/callback")
     public void handleGoogleOAuthCallback(@RequestParam(value = "code", required = false) String code,
-                                         @RequestParam(value = "state", required = false) String state,
-                                         @RequestParam(value = "error", required = false) String error,
-                                         jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
-        authService.processGoogleCallback(code, state, error, response);
+                                          @RequestParam(value = "state", required = false) String state,
+                                          @RequestParam(value = "error", required = false) String error,
+                                          jakarta.servlet.http.HttpServletRequest request,
+                                          jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+        authService.processGoogleCallback(code, state, error, request, response);
     }
 
     @PostMapping("/google")

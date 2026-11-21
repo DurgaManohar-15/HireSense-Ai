@@ -39,4 +39,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=45s --retries=3 \
   CMD sh -c 'wget --no-verbose --tries=1 --spider "http://localhost:${PORT:-8080}/actuator/health" || exit 0'
 
 # Launch Spring Boot Application with explicit dynamic port binding
-ENTRYPOINT ["sh", "-c", "java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT:-8080} -jar /app/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT:-8080} -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar /app/app.jar"]
