@@ -39,16 +39,16 @@ public class AuthController {
 
     @GetMapping("/google")
     public void initiateGoogleOAuth(jakarta.servlet.http.HttpServletRequest request,
-                                   jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+            jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
         authService.initiateGoogleAuthorization(request, response);
     }
 
     @GetMapping("/google/callback")
     public void handleGoogleOAuthCallback(@RequestParam(value = "code", required = false) String code,
-                                          @RequestParam(value = "state", required = false) String state,
-                                          @RequestParam(value = "error", required = false) String error,
-                                          jakarta.servlet.http.HttpServletRequest request,
-                                          jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+            @RequestParam(value = "state", required = false) String state,
+            @RequestParam(value = "error", required = false) String error,
+            jakarta.servlet.http.HttpServletRequest request,
+            jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
         authService.processGoogleCallback(code, state, error, request, response);
     }
 
@@ -70,7 +70,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserSummaryResponse>> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse<UserSummaryResponse>> getCurrentUser(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
         if (userPrincipal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("Unauthorized"));
         }

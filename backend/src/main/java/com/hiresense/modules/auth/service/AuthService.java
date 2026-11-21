@@ -380,9 +380,8 @@ public class AuthService {
 
         // Generate cryptographically secure random state for CSRF protection
         String randomNonce = UUID.randomUUID().toString().replace("-", "");
-        String encodedOrigin = (frontendOrigin != null && !frontendOrigin.isBlank())
-                ? Base64.getUrlEncoder().withoutPadding().encodeToString(frontendOrigin.getBytes(StandardCharsets.UTF_8))
-                : "";
+        String safeOrigin = (frontendOrigin != null && !frontendOrigin.isBlank()) ? frontendOrigin : "DEFAULT";
+        String encodedOrigin = Base64.getUrlEncoder().withoutPadding().encodeToString(safeOrigin.getBytes(StandardCharsets.UTF_8));
         String encodedRedirectUri = Base64.getUrlEncoder().withoutPadding().encodeToString(redirectUri.getBytes(StandardCharsets.UTF_8));
         String state = randomNonce + "." + encodedOrigin + "." + encodedRedirectUri;
 

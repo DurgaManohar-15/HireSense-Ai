@@ -24,7 +24,22 @@ public class JwtTokenProvider {
     private long jwtExpirationInMs;
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        byte[] keyBytes;
+        try {
+            if (jwtSecret != null && !jwtSecret.contains(".") && jwtSecret.length() >= 32) {
+                keyBytes = Decoders.BASE64.decode(jwtSecret);
+            } else {
+                keyBytes = java.security.MessageDigest.getInstance("SHA-256")
+                        .digest((jwtSecret != null ? jwtSecret : "HireSenseDefaultFallbackSecretKey2026HireSensePlatform").getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            }
+        } catch (Exception e) {
+            try {
+                keyBytes = java.security.MessageDigest.getInstance("SHA-256")
+                        .digest((jwtSecret != null ? jwtSecret : "HireSenseDefaultFallbackSecretKey2026HireSensePlatform").getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            } catch (Exception ex) {
+                keyBytes = "HireSenseFixedSecureFallbackKeyForJWTGeneration2026!".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            }
+        }
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
