@@ -138,12 +138,31 @@ body {
    Warm Ivory (#F3EFE6), Electric Black (#292929), Terracotta (#E78260)
    ========================================================================== */
 
+/* Dark Module Header Gradients -> Warm Ivory & Terracotta Editorial Banner */
+[class*="bg-gradient-to-"][class*="from-[#151"],
+[class*="bg-gradient-to-"][class*="from-[#101"],
+[class*="bg-gradient-to-"][class*="from-[#0"],
+[class*="bg-gradient-to-"][class*="from-slate-900"],
+[class*="bg-gradient-to-"][class*="from-brand-950"],
+[class*="bg-gradient-to-"][class*="from-purple-950"],
+[class*="bg-gradient-to-"][class*="to-[#0A0E13]"],
+[class*="bg-gradient-to-"][class*="to-indigo-950"] {
+  background-image: linear-gradient(135deg, #FFFFFF 0%, #FAF7F2 58%, #FBEDE8 100%) !important;
+  background-color: #FFFFFF !important;
+  border-color: #E2DDD5 !important;
+  color: #292929 !important;
+  box-shadow: 0 10px 30px -5px rgba(41, 41, 41, 0.06) !important;
+}
+
 /* Outer Canvas Wrappers */
 .bg-\[\#05070A\],
 .bg-\[\#000000\],
 .bg-\[\#080808\],
 .bg-\[\#070A0D\],
-.bg-\[\#070A12\] {
+.bg-\[\#070A12\],
+.bg-\[\#0A0E13\],
+.bg-\[\#0B0E14\],
+.bg-\[\#0F172A\] {
   background-color: #F3EFE6 !important;
   color: #292929 !important;
 }
@@ -169,6 +188,9 @@ body {
 /* Elevated Sub-surfaces & Wells -> Warm Ivory Light (#FAF8F5) */
 .bg-\[\#11171D\],
 .bg-\[\#151B22\],
+.bg-\[\#151D26\],
+.bg-\[\#151D27\],
+.bg-\[\#1C2530\],
 .bg-\[\#141414\],
 .bg-\[\#181818\],
 .bg-\[\#181E25\],
@@ -182,6 +204,7 @@ body {
 }
 
 /* Borders -> Warm Sand Border (#E2DDD5) */
+.border-\[\#202934\],
 .border-\[\#252D35\],
 .border-\[\#252C34\],
 .border-\[\#222222\],
@@ -198,6 +221,7 @@ body {
 
 /* Primary text & Headings -> Electric Black (#292929) */
 .text-\[\#F7F7F5\],
+.text-\[\#CBD5E1\],
 .text-white:not(button *):not(.bg-\[\#E78260\] *):not(.bg-\[\#292929\] *):not(.btn-primary *):not(.btn-secondary *):not(button.bg-\[\#292929\]):not(button.bg-\[\#E78260\]):not([class*="bg-emerald-500"]):not([class*="bg-indigo-600"]):not([class*="bg-blue-600"]):not([class*="bg-red-"]):not(.rounded-full.bg-\[\#E78260\]):not(.rounded-full.bg-\[\#292929\]):not(.text-white-forced) {
   color: #292929 !important;
 }
@@ -205,12 +229,15 @@ body {
 /* Secondary & Muted text -> Warm Charcoal (#5C5850 & #8E8A82) */
 .text-\[\#A9B0BA\],
 .text-\[\#A1A1AA\],
+.text-\[\#8E9CAE\],
+.text-\[\#8B949E\],
 .text-slate-400,
 .text-slate-300 {
   color: #5C5850 !important;
 }
 
 .text-\[\#68717D\],
+.text-\[\#6E7C8E\],
 .text-\[\#71717A\],
 .text-slate-500 {
   color: #8E8A82 !important;

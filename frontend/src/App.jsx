@@ -7,7 +7,6 @@ import { ProtectedRoute } from './components/layout/ProtectedRoute';
 // Public Pages
 import LandingPage from './pages/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
-import { RegisterPage } from './pages/auth/RegisterPage';
 import { AdminLoginPage } from './pages/auth/AdminLoginPage';
 import { OAuthCallbackPage } from './pages/auth/OAuthCallbackPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -77,7 +76,7 @@ export const App = () => {
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/register" element={<Navigate to="/login" replace />} />
           <Route path="/auth/callback" element={<OAuthCallbackPage />} />
 
           {/* Student Protected Routes */}

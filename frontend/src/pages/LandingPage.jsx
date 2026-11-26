@@ -69,15 +69,9 @@ export const LandingPage = () => {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-xs font-semibold text-[#292929] hover:text-[#E78260] transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
                   className="px-5 py-2.5 rounded-full text-xs font-semibold bg-[#292929] text-white hover:bg-black transition-all flex items-center gap-2 shadow-sm"
                 >
-                  Get Started <ArrowRight className="w-3.5 h-3.5 text-[#E78260]" />
+                  Sign In
                 </Link>
               </>
             )}
@@ -115,10 +109,10 @@ export const LandingPage = () => {
           {/* Hero CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-8">
             <Link
-              to="/register"
+              to="/login"
               className="px-8 py-4 rounded-full text-sm font-semibold bg-[#E78260] text-white hover:bg-[#d46845] transition-all flex items-center gap-2.5 shadow-lg shadow-[#E78260]/25 transform hover:-translate-y-0.5"
             >
-              Get started free <ArrowRight className="w-4 h-4" />
+              Get Started <ArrowRight className="w-4 h-4" />
             </Link>
 
             <a
@@ -130,43 +124,8 @@ export const LandingPage = () => {
             </a>
           </div>
 
-          {/* Visual Showcase with Floating Cards */}
-          <div className="mt-16 relative max-w-5xl mx-auto">
-
-            {/* Left Floating Card */}
-            <div className="hidden lg:block absolute -left-8 top-12 z-20 bg-white/95 backdrop-blur-md border border-[#E2DDD5] p-5 rounded-3xl shadow-xl shadow-black/[0.04] text-left max-w-xs animate-bounce-slow">
-              <div className="w-9 h-9 rounded-2xl bg-[#FBEDE8] flex items-center justify-center text-[#E78260] mb-3">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <h4 className="text-sm font-bold text-[#292929]">Turn preparation into offers.</h4>
-              <p className="text-xs text-[#5C5850] mt-1 leading-relaxed">
-                Automated ATS scoring with 0-fabrication resume optimization.
-              </p>
-              <div className="mt-3 pt-3 border-t border-[#E2DDD5]/60 flex items-center justify-between text-[11px] text-[#5C5850]">
-                <span>ATS Readiness</span>
-                <span className="font-bold text-[#27AE60] bg-[#27AE60]/10 px-2 py-0.5 rounded-full">94 / 100</span>
-              </div>
-            </div>
-
-            {/* Right Floating Card */}
-            <div className="hidden lg:block absolute -right-8 top-8 z-20 bg-white/95 backdrop-blur-md border border-[#E2DDD5] p-5 rounded-3xl shadow-xl shadow-black/[0.04] text-left max-w-xs">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="flex -space-x-2">
-                  <div className="w-7 h-7 rounded-full bg-[#E78260] text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">AI</div>
-                  <div className="w-7 h-7 rounded-full bg-[#292929] text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">S</div>
-                  <div className="w-7 h-7 rounded-full bg-[#E8C982] text-[#292929] flex items-center justify-center text-[10px] font-bold border-2 border-white">R</div>
-                </div>
-                <span className="text-[11px] font-semibold text-[#E78260] bg-[#FBEDE8] px-2 py-0.5 rounded-full">Live Gemini AI</span>
-              </div>
-              <h4 className="text-sm font-bold text-[#292929]">AI Mock Interviews, anytime.</h4>
-              <p className="text-xs text-[#5C5850] mt-1 leading-relaxed">
-                Speech &amp; code analysis calibrated for Google, Amazon, and TCS.
-              </p>
-              <div className="mt-3 pt-3 border-t border-[#E2DDD5]/60 flex items-center gap-1.5 text-[11px] text-[#5C5850]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#27AE60]" />
-                <span>Real-time feedback &amp; scoring</span>
-              </div>
-            </div>
+          {/* Visual Showcase (Clean, Unobstructed Stage) */}
+          <div className="mt-14 relative max-w-5xl mx-auto">
 
             {/* Main Interactive Stage Card */}
             <div className="bg-white rounded-[2rem] border border-[#E2DDD5] p-6 sm:p-10 shadow-xl shadow-black/[0.04]">
